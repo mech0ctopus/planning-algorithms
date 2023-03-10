@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
-from typing import Bool, List
-from search.primitives import SearchResult
-from space.primitives import Action, ActionSpace, DiscreteState, DiscreteStateSpace
+from typing import List
+from planning.search.primitives import SearchResult
+from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 
 
 class StateTransitionFunction(metaclass=ABCMeta):
@@ -22,11 +22,9 @@ class SearchAlgorithm(metaclass=ABCMeta):
     X_G: self.goal_space
     x: self.current_state
     """
-    def __init__(self, state_space: DiscreteStateSpace, action_space: ActionSpace,
-                 transition_function: StateTransitionFunction, initial_state: DiscreteState,
-                 goal_space: DiscreteStateSpace) -> None:
+    def __init__(self, state_space: DiscreteStateSpace, transition_function: StateTransitionFunction,
+                 initial_state: DiscreteState, goal_space: DiscreteStateSpace) -> None:
         self.state_space = state_space
-        self.action_space = action_space
         self.transition_function = transition_function
         self.initial_state = initial_state
         self.goal_space = goal_space
@@ -36,11 +34,11 @@ class SearchAlgorithm(metaclass=ABCMeta):
     def search(self) -> SearchResult:
         raise NotImplementedError
 
-    def has_succeeded(self) -> Bool:
+    def has_succeeded(self) -> bool:
         return self.goal_space.contains(self.current_state)
 
     def get_current_actions(self) -> List[Action]:
         return self.action_space.get_actions(self.current_state)
 
     def get_next_state(self, action: Action) -> DiscreteState:
-        return self.transition_function.get_next_state(self.current_state, action)
+        return self.transition_function.get_next_state(self.current_state, action, self.state_space)

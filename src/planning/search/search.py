@@ -1,9 +1,11 @@
-from search.abstract import SearchAlgorithm
-from search.primitives import SearchResult, StateTransitionFunction
-from space.primitives import ActionSpace, DiscreteState, DiscreteStateSpace
+from planning.search.abstract import SearchAlgorithm, StateTransitionFunction
+from planning.search.primitives import SearchResult
+from planning.space.primitives import DiscreteState, DiscreteStateSpace
 
 from collections import deque
 from typing import Bool
+
+# TODO: Add logic for checking if a state is `alive` or `dead` per p.33
 
 
 class ForwardSearchAlgorithm(SearchAlgorithm):
@@ -13,10 +15,10 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
     Q: self.queue
     x': next_state
     """
-    def __init__(self, state_space: DiscreteStateSpace, action_space: ActionSpace,
+    def __init__(self, state_space: DiscreteStateSpace,
                  transition_function: StateTransitionFunction, initial_state: DiscreteState,
                  goal_space: DiscreteStateSpace) -> None:
-        super().__init__(state_space, action_space, transition_function, initial_state, goal_space)
+        super().__init__(state_space, transition_function, initial_state, goal_space)
         self.queue = deque()
 
     def search(self) -> SearchResult:
