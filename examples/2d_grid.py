@@ -8,6 +8,8 @@ from planning.search.search import ForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 import numpy as np
 
+# TODO: Resolve zero-index / one-index issue. Plot is off by 1 spot in X and Y
+
 XMAX = 15
 YMAX = 15
 INITIAL_STATE_IDX = (1,2)
@@ -66,13 +68,18 @@ def build_xy_grid(state_space):
     for x in range(XMAX):
         for y in range(YMAX):
             grid[x, y] = state_space.space[(x,y)].is_visited()
-    return grid.T
+    return grid
 
-def plot_results(state_space):
+def plot_results(state_space, plan):
     grid = build_xy_grid(state_space)
+
+    for state_idx in plan:
+        grid[state_idx[0]][state_idx[1]] = 3
+
     grid[INITIAL_STATE_IDX[0]][INITIAL_STATE_IDX[1]] = -1
     grid[GOAL_STATE_IDX[0]][GOAL_STATE_IDX[1]] = 2
-    plt.imshow(grid, origin="lower")
+
+    plt.imshow(grid.T, origin="lower")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.savefig("2d_grid.png")
@@ -87,10 +94,17 @@ if __name__ == '__main__':
     # Define Initial State
     initial_state = state_space.space[INITIAL_STATE_IDX]
 
+    # Solve search problem. Get plan.
     forward_search_on_2d_grid = ForwardSearchAlgorithm(state_space, transition_func,
                                                        initial_state, goal_space, verbose=False)
-    result = forward_search_on_2d_grid.search()
+    success = forward_search_on_2d_grid.search()
+    plan = forward_search_on_2d_grid.get_plan()
 
-    print(result)
-    plot_results(state_space)
-
+    # Print / Plot results
+    print(f"Success: {success}")
+    print("Plan:")
+    for state_idx in plan:
+        print(state_idx)
+    print("Plotting results")
+    plot_results(state_space, plan)
+    print("Done")

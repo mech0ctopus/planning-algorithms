@@ -14,9 +14,10 @@ class Action(metaclass=ABCMeta):
 
 
 class DiscreteState:
-    def __init__(self, index: Any, actions: List[Action]) -> None:
+    def __init__(self, index: Any, actions: List[Action], parent=None) -> None:
         self.index = index
         self.actions = actions
+        self.parent = None
         self.status = DiscreteStateStatus.UNVISITED
 
     def __repr__(self) -> str:
@@ -40,6 +41,12 @@ class DiscreteState:
     def add_action(self, action: Action) -> None:
         self.actions.append(action)
 
+    def set_parent(self, parent) -> None:
+        self.parent = parent
+
+    def get_parent(self) -> None:
+        return self.parent
+
 
 class DiscreteStateSpace:
     def __init__(self) -> None:
@@ -55,7 +62,6 @@ class DiscreteStateSpace:
         self.space[state.index] = state
 
     def contains(self, state_to_check: DiscreteState) -> bool:
-        #TODO: Can we use `state_to_check in self.space` here?
         for state in self.space:
             if state == state_to_check:
                 return True

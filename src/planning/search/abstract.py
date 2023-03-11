@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import List
+from typing import List, Tuple
 from planning.search.primitives import SearchResult
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 
@@ -30,6 +30,7 @@ class SearchAlgorithm(metaclass=ABCMeta):
         self.goal_space = goal_space
         self.verbose = verbose
         self.current_state = None
+        self.plan = [] # list of state indices
 
     @abstractmethod
     def search(self) -> SearchResult:
@@ -43,3 +44,18 @@ class SearchAlgorithm(metaclass=ABCMeta):
 
     def get_next_state(self, action: Action) -> DiscreteState:
         return self.transition_function.get_next_state(self.current_state, action, self.state_space)
+
+    def get_plan(self) -> List[Tuple]:
+        """
+        Returns a list of state indices from initial_state to goal_state
+
+        Assumes `search` has already been called.
+        """
+        plan = []
+        planning_state = self.current_state
+
+        while (parent := planning_state.get_parent()) is not None:
+            plan.append(planning_state.index)
+            planning_state = parent
+
+        return list(reversed(plan))
