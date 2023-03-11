@@ -14,5 +14,13 @@ class FIFO(PriorityQueue):
     def add(self, state: DiscreteState) -> None:
         self.queue.append(state)
 
-    def is_empty(self) -> bool:
-        return len(self.queue) == 0
+
+class LIFO(PriorityQueue):
+    def __init__(self) -> None:
+        self.queue = deque()
+
+    def get(self) -> DiscreteState:
+        return self.queue.pop()
+
+    def add(self, state: DiscreteState) -> None:
+        self.queue.append(state)

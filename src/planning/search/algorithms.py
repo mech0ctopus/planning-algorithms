@@ -1,7 +1,7 @@
 from planning.search.abstract import PriorityQueue
 from planning.search.abstract import SearchAlgorithm, StateTransitionFunction
 from planning.search.primitives import SearchResult
-from planning.search.queue import FIFO
+from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState, DiscreteStateSpace
 
 from copy import deepcopy
@@ -56,4 +56,12 @@ class BreadthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
                  initial_state: DiscreteState, goal_space: DiscreteStateSpace, verbose: bool = False) -> None:
         # Specify FIFO for all BreadthFirst
         priority_queue_type = FIFO
+        super().__init__(state_space, transition_function, initial_state, goal_space, priority_queue_type, verbose)
+
+
+class DepthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
+    def __init__(self, state_space: DiscreteStateSpace, transition_function: StateTransitionFunction,
+                 initial_state: DiscreteState, goal_space: DiscreteStateSpace, verbose: bool = False) -> None:
+        # Specify LIFO for all DepthFirst
+        priority_queue_type = LIFO
         super().__init__(state_space, transition_function, initial_state, goal_space, priority_queue_type, verbose)

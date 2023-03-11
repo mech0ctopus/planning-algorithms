@@ -4,7 +4,8 @@
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 from planning.search.abstract import StateTransitionFunction
-from planning.search.search import BreadthFirstForwardSearchAlgorithm
+from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
+from planning.search.algorithms import DepthFirstForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 import numpy as np
 

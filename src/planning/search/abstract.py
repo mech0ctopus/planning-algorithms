@@ -26,10 +26,7 @@ class PriorityQueue(metaclass=ABCMeta):
         raise NotImplementedError
 
     def is_empty(self) -> bool:
-        """
-        Whether Queue is empty.
-        """
-        raise NotImplementedError
+        return len(self.queue) == 0
 
 
 class SearchAlgorithm(metaclass=ABCMeta):
