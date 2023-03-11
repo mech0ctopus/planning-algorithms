@@ -4,6 +4,7 @@ from planning.search.primitives import SearchResult
 from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState, DiscreteStateSpace
 
+from abc import abstractmethod
 from copy import deepcopy
 
 # TODO: Add logic for checking if a state is `alive` or `dead` per p.33
@@ -46,9 +47,13 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
                     next_state.mark_alive()
                     self.priority_queue.add(next_state)
                 else:
-                    continue
+                    self.resolve_duplicate(next_state)
 
         return SearchResult.FAILURE
+
+    @abstractmethod
+    def resolve_duplicate(self, next_state: DiscreteState) -> None:
+        raise NotImplementedError
 
 
 class BreadthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
@@ -58,6 +63,9 @@ class BreadthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
         priority_queue_type = FIFO
         super().__init__(state_space, transition_function, initial_state, goal_space, priority_queue_type, verbose)
 
+    def resolve_duplicate(self, next_state: DiscreteState) -> None:
+        pass
+
 
 class DepthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
     def __init__(self, state_space: DiscreteStateSpace, transition_function: StateTransitionFunction,
@@ -65,3 +73,6 @@ class DepthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
         # Specify LIFO for all DepthFirst
         priority_queue_type = LIFO
         super().__init__(state_space, transition_function, initial_state, goal_space, priority_queue_type, verbose)
+
+    def resolve_duplicate(self, next_state: DiscreteState) -> None:
+        pass

@@ -17,7 +17,7 @@ class FIFO(PriorityQueue):
 
 class LIFO(PriorityQueue):
     def __init__(self) -> None:
-        self.queue = deque()
+        self.queue = []
 
     def get(self) -> DiscreteState:
         return self.queue.pop()
