@@ -3,7 +3,6 @@ from planning.search.primitives import SearchResult
 from planning.space.primitives import DiscreteState, DiscreteStateSpace
 
 from collections import deque
-from typing import Bool
 
 # TODO: Add logic for checking if a state is `alive` or `dead` per p.33
 
@@ -17,8 +16,8 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
     """
     def __init__(self, state_space: DiscreteStateSpace,
                  transition_function: StateTransitionFunction, initial_state: DiscreteState,
-                 goal_space: DiscreteStateSpace) -> None:
-        super().__init__(state_space, transition_function, initial_state, goal_space)
+                 goal_space: DiscreteStateSpace, verbose: bool = True) -> None:
+        super().__init__(state_space, transition_function, initial_state, goal_space, verbose)
         self.queue = deque()
 
     def search(self) -> SearchResult:
@@ -28,6 +27,9 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
 
         while self.queue_is_not_empty():
             self.current_state = self.queue.popleft()
+            if self.verbose:
+                print(f"Current State: {self.current_state}")
+
             if self.has_succeeded():
                 return SearchResult.SUCCESS
 
@@ -41,9 +43,9 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
                     self.queue.appendleft(next_state)
                 else:
                     # TODO: Resolve duplicate `next_state`
-                    raise NotImplementedError
+                    continue
 
         return SearchResult.FAILURE
 
-    def queue_is_not_empty(self) -> Bool:
+    def queue_is_not_empty(self) -> bool:
         return len(self.queue) > 0

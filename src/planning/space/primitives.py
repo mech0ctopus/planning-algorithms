@@ -19,6 +19,12 @@ class DiscreteState:
         self.actions = actions
         self.status = DiscreteStateStatus.UNVISITED
 
+    def __repr__(self) -> str:
+        return f"index={self.index}. status={self.status}"
+
+    def __eq__(self, other_state) -> bool:
+        return self.index == other_state
+
     def mark_alive(self) -> None:
         self.status = DiscreteStateStatus.ALIVE
 
@@ -31,10 +37,19 @@ class DiscreteState:
     def get_actions(self) -> List[Action]:
         return self.actions
 
+    def add_action(self, action: Action) -> None:
+        self.actions.append(action)
+
 
 class DiscreteStateSpace:
     def __init__(self) -> None:
         self.space = {}
+
+    def __repr__(self) -> str:
+        s = ""
+        for _, state in self.space.items():
+            s += str(state) + "\n"
+        return s
 
     def add_state(self, state: DiscreteState) -> None:
         self.space[state.index] = state

@@ -23,11 +23,12 @@ class SearchAlgorithm(metaclass=ABCMeta):
     x: self.current_state
     """
     def __init__(self, state_space: DiscreteStateSpace, transition_function: StateTransitionFunction,
-                 initial_state: DiscreteState, goal_space: DiscreteStateSpace) -> None:
+                 initial_state: DiscreteState, goal_space: DiscreteStateSpace, verbose: bool) -> None:
         self.state_space = state_space
         self.transition_function = transition_function
         self.initial_state = initial_state
         self.goal_space = goal_space
+        self.verbose = verbose
         self.current_state = None
 
     @abstractmethod
@@ -38,7 +39,7 @@ class SearchAlgorithm(metaclass=ABCMeta):
         return self.goal_space.contains(self.current_state)
 
     def get_current_actions(self) -> List[Action]:
-        return self.action_space.get_actions(self.current_state)
+        return self.current_state.get_actions()
 
     def get_next_state(self, action: Action) -> DiscreteState:
         return self.transition_function.get_next_state(self.current_state, action, self.state_space)
