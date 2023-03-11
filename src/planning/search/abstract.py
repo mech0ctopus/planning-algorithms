@@ -10,6 +10,28 @@ class StateTransitionFunction(metaclass=ABCMeta):
         raise NotImplementedError
 
 
+class PriorityQueue(metaclass=ABCMeta):
+    @abstractmethod
+    def get(self) -> DiscreteState:
+        """
+        Get next state in the queue.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def add(self, state: DiscreteState) -> None:
+        """
+        Add a state to the Queue.
+        """
+        raise NotImplementedError
+
+    def is_empty(self) -> bool:
+        """
+        Whether Queue is empty.
+        """
+        raise NotImplementedError
+
+
 class SearchAlgorithm(metaclass=ABCMeta):
     """
     Abstract Discrete Feasible Planning `SearchAlgorithm`.

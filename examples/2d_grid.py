@@ -5,10 +5,12 @@
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 from planning.search.abstract import StateTransitionFunction
 from planning.search.search import ForwardSearchAlgorithm
+from planning.search.queue import FIFO
 import matplotlib.pyplot as plt
 import numpy as np
 
 # TODO: Resolve zero-index / one-index issue. Plot is off by 1 spot in X and Y
+# TODO: Cleanup / Refactor this example. Create an abstract PlanningProblemClass?
 
 XMAX = 15
 YMAX = 15
@@ -94,14 +96,16 @@ if __name__ == '__main__':
     # Define Initial State
     initial_state = state_space.space[INITIAL_STATE_IDX]
 
-    # Solve search problem. Get plan.
+    # Solve search problem
     forward_search_on_2d_grid = ForwardSearchAlgorithm(state_space, transition_func,
-                                                       initial_state, goal_space, verbose=False)
+                                                       initial_state, goal_space, FIFO,
+                                                       verbose=False)
     success = forward_search_on_2d_grid.search()
+    print(f"Success: {success}")
+    # Get Plan
     plan = forward_search_on_2d_grid.get_plan()
 
     # Print / Plot results
-    print(f"Success: {success}")
     print("Plan:")
     for state_idx in plan:
         print(state_idx)
