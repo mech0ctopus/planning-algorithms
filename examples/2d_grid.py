@@ -4,8 +4,7 @@
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 from planning.search.abstract import StateTransitionFunction
-from planning.search.search import ForwardSearchAlgorithm
-from planning.search.queue import FIFO
+from planning.search.search import BreadthFirstForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -97,9 +96,9 @@ if __name__ == '__main__':
     initial_state = state_space.space[INITIAL_STATE_IDX]
 
     # Solve search problem
-    forward_search_on_2d_grid = ForwardSearchAlgorithm(state_space, transition_func,
-                                                       initial_state, goal_space, FIFO,
-                                                       verbose=False)
+    forward_search_on_2d_grid = BreadthFirstForwardSearchAlgorithm(state_space, transition_func,
+                                                                   initial_state, goal_space,
+                                                                   verbose=False)
     success = forward_search_on_2d_grid.search()
     print(f"Success: {success}")
     # Get Plan
