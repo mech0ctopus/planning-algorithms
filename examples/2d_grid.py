@@ -8,8 +8,8 @@ from planning.search.search import ForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 import numpy as np
 
-XMAX = 10
-YMAX = 10
+XMAX = 15
+YMAX = 15
 INITIAL_STATE_IDX = (1,2)
 GOAL_STATE_IDX = (8,5)
 
@@ -23,7 +23,6 @@ COMMON_ACTIONS = [MoveOnGrid(-1, 0),
                   MoveOnGrid(0, -1),
                   MoveOnGrid(0, 1),
                   ]
-    
 
 class GridStateTransitionFunction(StateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: Action,
