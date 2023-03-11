@@ -105,6 +105,4 @@ if __name__ == '__main__':
     print("Plan:")
     for state_idx in plan:
         print(state_idx)
-    print("Plotting results")
     plot_results(state_space, plan)
-    print("Done")

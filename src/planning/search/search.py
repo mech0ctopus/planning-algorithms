@@ -4,6 +4,7 @@ from planning.space.primitives import DiscreteState, DiscreteStateSpace
 
 from collections import deque
 from copy import deepcopy
+
 # TODO: Add logic for checking if a state is `alive` or `dead` per p.33
 # TODO: Raise exception if search fails (instead of Return code)
 
@@ -36,6 +37,8 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
             for action in self.get_current_actions():
                 next_state = self.get_next_state(action)
                 next_state.set_parent(deepcopy(self.current_state))
+                # TODO: Store action taken from current_state -> next_state
+                #       so that we can return it with our plan later on.
                 if not next_state.is_visited():
                     # TODO: Algo states to "mark as visited", not "alive". Is this line correct?
                     next_state.mark_alive()

@@ -62,7 +62,4 @@ class DiscreteStateSpace:
         self.space[state.index] = state
 
     def contains(self, state_to_check: DiscreteState) -> bool:
-        for state in self.space:
-            if state == state_to_check:
-                return True
-        return False
+        return state_to_check.index in self.space.keys()

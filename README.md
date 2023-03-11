@@ -8,3 +8,15 @@ cd planning-algorithms
 # Install in editable mode
 pip3 install -e .
 ```
+
+### Tests
+```bash
+cd planning-algorithms
+nosetests3 .
+```
+
+### Examples
+```bash
+cd planning-algorithms/examples
+python 2d_grid.py
+```
