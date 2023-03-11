@@ -6,20 +6,24 @@ from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 from planning.search.abstract import StateTransitionFunction
 from planning.search.search import ForwardSearchAlgorithm
 import matplotlib.pyplot as plt
+import numpy as np
 
+XMAX = 10
+YMAX = 10
+INITIAL_STATE_IDX = (1,2)
+GOAL_STATE_IDX = (8,5)
 
 class MoveOnGrid(Action):
     def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
 
-
-common_actions = [MoveOnGrid(-1, 0),
+COMMON_ACTIONS = [MoveOnGrid(-1, 0),
                   MoveOnGrid(1, 0),
                   MoveOnGrid(0, -1),
                   MoveOnGrid(0, 1),
                   ]
-                  
+    
 
 class GridStateTransitionFunction(StateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: Action,
@@ -28,22 +32,25 @@ class GridStateTransitionFunction(StateTransitionFunction):
                           current_state.index[1] + action.y)
         return state_space.space[next_state_idx]
 
-def build_state_space(xmax=10, ymax=10):
+
+def build_state_space():
     state_space = DiscreteStateSpace()
-    actions = [MoveOnGrid(-1, 0),
-                MoveOnGrid(1, 0),
-                MoveOnGrid(0, -1),
-                MoveOnGrid(0, 1),
-                ]
-    # TODO: Set actions for states appropriately
-    for x in range(xmax):
-        for y in range (ymax):
-            actions = []
+    for x in range(XMAX):
+        for y in range (YMAX):
             # Non-Border cells
-            if 0 < x < (xmax - 1) and 0 < y < (ymax - 1):
-                actions = common_actions
+            if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1):
+                actions = COMMON_ACTIONS
             else:
-                state = DiscreteState(index=(x,y), actions=[])
+                actions = []
+                if x == 0:
+                    actions.append(MoveOnGrid(1, 0))
+                if y == 0:
+                    actions.append(MoveOnGrid(0, 1))
+                if x == XMAX:
+                    actions.append(MoveOnGrid(-1, 0))
+                if y == YMAX:
+                    actions.append(MoveOnGrid(0, -1))
+
             state = DiscreteState(index=(x,y), actions=actions)
             state_space.add_state(state)
     
@@ -51,22 +58,25 @@ def build_state_space(xmax=10, ymax=10):
 
 def build_goal_space():
     goal_space = DiscreteStateSpace()
-    goal_state = DiscreteState(index=(8,8), actions=common_actions)
+    goal_state = DiscreteState(index=GOAL_STATE_IDX, actions=COMMON_ACTIONS)
     goal_space.add_state(goal_state)
     return goal_space
 
-def build_xy_grid(state_space, xmax=10, ymax=10):
-    grid = []
-    for x in range(xmax):
-        row = []
-        for y in range(ymax):
-            if state_space.space[(x,y)].is_visited():
-                value = 1
-            else:
-                value = 0
-            row.append(value)
-        grid.append(row)
-    return grid
+def build_xy_grid(state_space):
+    grid = np.zeros((XMAX, YMAX))
+    for x in range(XMAX):
+        for y in range(YMAX):
+            grid[x, y] = state_space.space[(x,y)].is_visited()
+    return grid.T
+
+def plot_results(state_space):
+    grid = build_xy_grid(state_space)
+    grid[INITIAL_STATE_IDX[0]][INITIAL_STATE_IDX[1]] = -1
+    grid[GOAL_STATE_IDX[0]][GOAL_STATE_IDX[1]] = 2
+    plt.imshow(grid, origin="lower")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.savefig("2d_grid.png")
 
 if __name__ == '__main__':
     # Define State Space
@@ -76,18 +86,12 @@ if __name__ == '__main__':
     # Define StateTransitionFunction
     transition_func = GridStateTransitionFunction()
     # Define Initial State
-    initial_state_idx = (2,2)
-    initial_state = state_space.space[initial_state_idx]
+    initial_state = state_space.space[INITIAL_STATE_IDX]
 
     forward_search_on_2d_grid = ForwardSearchAlgorithm(state_space, transition_func,
-                                                       initial_state, goal_space)
+                                                       initial_state, goal_space, verbose=False)
     result = forward_search_on_2d_grid.search()
-    print(state_space)
-    print(result)
 
-    # Plot results
-    grid = build_xy_grid(state_space)
-    grid[2][2] = -1
-    grid[8][8] = 2
-    plt.imshow(grid, origin="lower")
-    plt.savefig("2d_grid.png")
+    print(result)
+    plot_results(state_space)
+
