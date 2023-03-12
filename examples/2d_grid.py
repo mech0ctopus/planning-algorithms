@@ -7,26 +7,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # TODO: Resolve zero-index / one-index issue. Plot is off by 1 spot in X and Y
-# TODO: Cleanup / Refactor this example. Create an abstract PlanningProblemClass?
+# TODO: Cleanup / Refactor this example.
 
 XMAX = 15
 YMAX = 15
 INITIAL_STATE_IDX = (1,2)
 GOAL_STATE_IDX = (8,5)
 
+
 class MoveOnGrid(Action):
     def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
 
-COMMON_ACTIONS = [MoveOnGrid(-1, 0),
-                  MoveOnGrid(1, 0),
-                  MoveOnGrid(0, -1),
-                  MoveOnGrid(0, 1),
-                  ]
 
 class GridStateTransitionFunction(StateTransitionFunction):
-    def get_next_state(self, current_state: DiscreteState, action: Action,
+    def get_next_state(self, current_state: DiscreteState, action: MoveOnGrid,
                        state_space: DiscreteStateSpace) -> DiscreteState:      
         next_state_idx = (current_state.index[0] + action.x,
                           current_state.index[1] + action.y)
@@ -39,7 +35,11 @@ def build_state_space():
         for y in range (YMAX):
             # Non-Border cells
             if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1):
-                actions = COMMON_ACTIONS
+                actions = [MoveOnGrid(-1, 0),
+                           MoveOnGrid(1, 0),
+                           MoveOnGrid(0, -1),
+                           MoveOnGrid(0, 1),
+                           ]
             else:
                 actions = []
                 if x == 0:
@@ -58,7 +58,7 @@ def build_state_space():
 
 def build_goal_space():
     goal_space = DiscreteStateSpace()
-    goal_state = DiscreteState(index=GOAL_STATE_IDX, actions=COMMON_ACTIONS)
+    goal_state = DiscreteState(index=GOAL_STATE_IDX, actions=[])
     goal_space.add_state(goal_state)
     return goal_space
 
@@ -82,6 +82,7 @@ def plot_results(state_space, plan):
     plt.xlabel("x")
     plt.ylabel("y")
     plt.savefig("2d_grid.png")
+
 
 if __name__ == '__main__':
     # Define search problem
