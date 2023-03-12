@@ -1,11 +1,8 @@
 # Example 2.1: A robot moving on a 2D grid
-#
-# 10x10 Grid
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
-from planning.search.abstract import StateTransitionFunction
+from planning.search.abstract import SearchProblem, StateTransitionFunction
 from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
-from planning.search.algorithms import DepthFirstForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -87,19 +84,15 @@ def plot_results(state_space, plan):
     plt.savefig("2d_grid.png")
 
 if __name__ == '__main__':
-    # Define State Space
+    # Define search problem
     state_space = build_state_space()
-    # Define Goal Space
-    goal_space = build_goal_space()
-    # Define StateTransitionFunction
-    transition_func = GridStateTransitionFunction()
-    # Define Initial State
-    initial_state = state_space.space[INITIAL_STATE_IDX]
-
+    problem = SearchProblem(state_space=state_space,
+                            goal_space=build_goal_space(),
+                            transition_function=GridStateTransitionFunction(),
+                            initial_state = state_space.space[INITIAL_STATE_IDX]
+                            )
     # Solve search problem
-    forward_search_on_2d_grid = BreadthFirstForwardSearchAlgorithm(state_space, transition_func,
-                                                                   initial_state, goal_space,
-                                                                   verbose=False)
+    forward_search_on_2d_grid = BreadthFirstForwardSearchAlgorithm(problem, verbose=False)
     success = forward_search_on_2d_grid.search()
     print(f"Success: {success}")
     # Get Plan

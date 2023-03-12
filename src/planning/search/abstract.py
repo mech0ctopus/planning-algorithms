@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from dataclasses import dataclass
 from typing import List, Tuple
 from planning.search.primitives import SearchResult
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
@@ -29,6 +30,14 @@ class PriorityQueue(metaclass=ABCMeta):
         return len(self.queue) == 0
 
 
+@dataclass
+class SearchProblem:
+    state_space: DiscreteStateSpace
+    transition_function: StateTransitionFunction
+    initial_state: DiscreteState
+    goal_space: DiscreteStateSpace
+
+
 class SearchAlgorithm(metaclass=ABCMeta):
     """
     Abstract Discrete Feasible Planning `SearchAlgorithm`.
@@ -41,12 +50,8 @@ class SearchAlgorithm(metaclass=ABCMeta):
     X_G: self.goal_space
     x: self.current_state
     """
-    def __init__(self, state_space: DiscreteStateSpace, transition_function: StateTransitionFunction,
-                 initial_state: DiscreteState, goal_space: DiscreteStateSpace, verbose: bool) -> None:
-        self.state_space = state_space
-        self.transition_function = transition_function
-        self.initial_state = initial_state
-        self.goal_space = goal_space
+    def __init__(self, problem: SearchProblem, verbose: bool) -> None:
+        self.problem = problem
         self.verbose = verbose
         self.current_state = None
         self.plan = [] # list of state indices
@@ -56,13 +61,13 @@ class SearchAlgorithm(metaclass=ABCMeta):
         raise NotImplementedError
 
     def has_succeeded(self) -> bool:
-        return self.goal_space.contains(self.current_state)
+        return self.problem.goal_space.contains(self.current_state)
 
     def get_current_actions(self) -> List[Action]:
         return self.current_state.get_actions()
 
     def get_next_state(self, action: Action) -> DiscreteState:
-        return self.transition_function.get_next_state(self.current_state, action, self.state_space)
+        return self.problem.transition_function.get_next_state(self.current_state, action, self.problem.state_space)
 
     def get_plan(self) -> List[Tuple]:
         """

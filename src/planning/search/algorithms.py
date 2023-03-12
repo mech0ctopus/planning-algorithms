@@ -1,5 +1,5 @@
 from planning.search.abstract import PriorityQueue
-from planning.search.abstract import SearchAlgorithm, StateTransitionFunction
+from planning.search.abstract import SearchAlgorithm, SearchProblem, StateTransitionFunction
 from planning.search.primitives import SearchResult
 from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState, DiscreteStateSpace
@@ -17,17 +17,15 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
     Q: self.priority_queue
     x': next_state
     """
-    def __init__(self, state_space: DiscreteStateSpace,
-                 transition_function: StateTransitionFunction, initial_state: DiscreteState,
-                 goal_space: DiscreteStateSpace, priority_queue_type: PriorityQueue,
+    def __init__(self, problem: SearchProblem, priority_queue_type: PriorityQueue,
                  verbose: bool = False) -> None:
-        super().__init__(state_space, transition_function, initial_state, goal_space, verbose)
+        super().__init__(problem, verbose)
         self.priority_queue = priority_queue_type()
 
     def search(self) -> SearchResult:
-        self.priority_queue.add(self.initial_state)
+        self.priority_queue.add(self.problem.initial_state)
         # TODO: Algo states to "mark as visited", not "alive". Is this line correct?
-        self.initial_state.mark_alive()
+        self.problem.initial_state.mark_alive()
 
         while not self.priority_queue.is_empty():
             self.current_state = self.priority_queue.get()
@@ -57,22 +55,20 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
 
 
 class BreadthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
-    def __init__(self, state_space: DiscreteStateSpace, transition_function: StateTransitionFunction,
-                 initial_state: DiscreteState, goal_space: DiscreteStateSpace, verbose: bool = False) -> None:
+    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
         # Specify FIFO for all BreadthFirst
         priority_queue_type = FIFO
-        super().__init__(state_space, transition_function, initial_state, goal_space, priority_queue_type, verbose)
+        super().__init__(problem, priority_queue_type, verbose)
 
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         pass
 
 
 class DepthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
-    def __init__(self, state_space: DiscreteStateSpace, transition_function: StateTransitionFunction,
-                 initial_state: DiscreteState, goal_space: DiscreteStateSpace, verbose: bool = False) -> None:
+    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
         # Specify LIFO for all DepthFirst
         priority_queue_type = LIFO
-        super().__init__(state_space, transition_function, initial_state, goal_space, priority_queue_type, verbose)
+        super().__init__(problem, priority_queue_type, verbose)
 
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         pass
