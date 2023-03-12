@@ -20,3 +20,7 @@ nosetests3 .
 cd planning-algorithms/examples
 python 2d_grid.py
 ```
+
+### TODO
+- Consider moving problems into a `planning/problems` folder so they can be imported.
+- Add plot results to problem class
