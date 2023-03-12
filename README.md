@@ -24,3 +24,8 @@ python 2d_grid.py
 ### TODO
 - Consider moving problems into a `planning/problems` folder so they can be imported.
 - Add plot results to problem class
+- Integrate "Cost" calculations.
+- Implement:
+    - Dijkstra's
+    - A-Star
+    - IterativeDeepening

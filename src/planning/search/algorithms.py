@@ -40,6 +40,7 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
                 next_state.set_parent(deepcopy(self.current_state))
                 # TODO: Store action taken from current_state -> next_state
                 #       so that we can return it with our plan later on.
+                # TODO: Calculate cost for taken this action.
                 if not next_state.is_visited():
                     # TODO: Algo states to "mark as visited", not "alive". Is this line correct?
                     next_state.mark_alive()
@@ -72,3 +73,27 @@ class DepthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
 
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         pass
+
+
+class DijkstrasForwardSearchAlgorithm(ForwardSearchAlgorithm):
+    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
+        raise NotImplementedError
+        # TODO: Use a Fibonacci Heap
+        priority_queue_type = None
+        super().__init__(problem, priority_queue_type, verbose)
+
+    def resolve_duplicate(self, next_state: DiscreteState) -> None:
+        # TODO: See bottom of P.36-37
+        raise NotImplementedError
+
+
+class AStarForwardSearchAlgorithm(ForwardSearchAlgorithm):
+    # TODO: Possibly inherit from Dijkstra's. Just change the priority queue.
+    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
+        raise NotImplementedError
+        priority_queue_type = None
+        super().__init__(problem, priority_queue_type, verbose)
+
+    def resolve_duplicate(self, next_state: DiscreteState) -> None:
+        # TODO: See bottom of P.36-37
+        raise NotImplementedError
