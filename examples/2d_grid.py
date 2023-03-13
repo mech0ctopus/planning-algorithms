@@ -5,6 +5,7 @@ from planning.search.abstract import SearchProblem, StateTransitionFunction
 from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 import numpy as np
+from typing import List
 
 # TODO: Resolve zero-index / one-index issue. Plot is off by 1 spot in X and Y
 # TODO: Cleanup / Refactor this example.
@@ -29,36 +30,39 @@ class GridStateTransitionFunction(StateTransitionFunction):
         return state_space.space[next_state_idx]
 
 
+class Grid2DSearchProblem(SearchProblem):
+    def get_actions(self, state: DiscreteState) -> List[Action]:
+        x, y = state.index
+        # Non-Border cells
+        if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1):
+            actions = [MoveOn2dGrid(-1, 0),
+                        MoveOn2dGrid(1, 0),
+                        MoveOn2dGrid(0, -1),
+                        MoveOn2dGrid(0, 1),
+                        ]
+        else:
+            actions = []
+            if x == 0:
+                actions.append(MoveOn2dGrid(1, 0))
+            if y == 0:
+                actions.append(MoveOn2dGrid(0, 1))
+            if x == XMAX:
+                actions.append(MoveOn2dGrid(-1, 0))
+            if y == YMAX:
+                actions.append(MoveOn2dGrid(0, -1))
+        return actions
+
 def build_state_space():
     state_space = DiscreteStateSpace()
     for x in range(XMAX):
         for y in range (YMAX):
-            # Non-Border cells
-            if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1):
-                actions = [MoveOn2dGrid(-1, 0),
-                           MoveOn2dGrid(1, 0),
-                           MoveOn2dGrid(0, -1),
-                           MoveOn2dGrid(0, 1),
-                           ]
-            else:
-                actions = []
-                if x == 0:
-                    actions.append(MoveOn2dGrid(1, 0))
-                if y == 0:
-                    actions.append(MoveOn2dGrid(0, 1))
-                if x == XMAX:
-                    actions.append(MoveOn2dGrid(-1, 0))
-                if y == YMAX:
-                    actions.append(MoveOn2dGrid(0, -1))
-
-            state = DiscreteState(index=(x,y), actions=actions)
-            state_space.add_state(state)
-    
+            state = DiscreteState(index=(x,y))
+            state_space.add_state(state)   
     return state_space
 
 def build_goal_space():
     goal_space = DiscreteStateSpace()
-    goal_state = DiscreteState(index=GOAL_STATE_IDX, actions=[])
+    goal_state = DiscreteState(index=GOAL_STATE_IDX)
     goal_space.add_state(goal_state)
     return goal_space
 
@@ -87,11 +91,11 @@ def plot_results(state_space, plan):
 if __name__ == '__main__':
     # Define search problem
     state_space = build_state_space()
-    problem = SearchProblem(state_space=state_space,
-                            goal_space=build_goal_space(),
-                            transition_function=GridStateTransitionFunction(),
-                            initial_state = state_space.space[INITIAL_STATE_IDX]
-                            )
+    problem = Grid2DSearchProblem(state_space=state_space,
+                                  goal_space=build_goal_space(),
+                                  transition_function=GridStateTransitionFunction(),
+                                  initial_state=state_space.space[INITIAL_STATE_IDX]
+                                  )
     # Solve search problem
     solver = BreadthFirstForwardSearchAlgorithm(problem, verbose=False)
     success = solver.search()

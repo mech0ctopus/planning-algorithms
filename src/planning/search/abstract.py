@@ -31,11 +31,18 @@ class PriorityQueue(metaclass=ABCMeta):
 
 
 @dataclass
-class SearchProblem:
+class SearchProblem(metaclass=ABCMeta):
     state_space: DiscreteStateSpace
     transition_function: StateTransitionFunction
     initial_state: DiscreteState
     goal_space: DiscreteStateSpace
+
+    @abstractmethod
+    def get_actions(self, state: DiscreteState) -> List[Action]:
+        """
+        U(x). Return all actions available for the current state.
+        """
+        raise NotImplementedError
 
 
 class SearchAlgorithm(metaclass=ABCMeta):
@@ -64,7 +71,7 @@ class SearchAlgorithm(metaclass=ABCMeta):
         return self.problem.goal_space.contains(self.current_state)
 
     def get_current_actions(self) -> List[Action]:
-        return self.current_state.get_actions()
+        return self.problem.get_actions(self.current_state)
 
     def get_next_state(self, action: Action) -> DiscreteState:
         return self.problem.transition_function.get_next_state(self.current_state, action, self.problem.state_space)

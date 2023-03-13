@@ -14,10 +14,9 @@ class Action(metaclass=ABCMeta):
 
 
 class DiscreteState:
-    def __init__(self, index: Any, actions: List[Action], parent=None) -> None:
+    def __init__(self, index: Any, parent=None) -> None:
         self.index = index
-        self.actions = actions
-        self.parent = None
+        self.parent = parent
         self.status = DiscreteStateStatus.UNVISITED
 
     def __repr__(self) -> str:
@@ -34,12 +33,6 @@ class DiscreteState:
 
     def is_visited(self) -> bool:
         return self.status != DiscreteStateStatus.UNVISITED
-
-    def get_actions(self) -> List[Action]:
-        return self.actions
-
-    def add_action(self, action: Action) -> None:
-        self.actions.append(action)
 
     def set_parent(self, parent) -> None:
         self.parent = parent
