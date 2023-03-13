@@ -6,12 +6,10 @@ from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace,
 
 class TestDiscreteState(unittest.TestCase):
     def setUp(self):
-        self.actions = [Mock(spec=Action) for _ in range(3)]
-        self.state = DiscreteState(1, self.actions)
+        self.state = DiscreteState(1)
 
     def test_init(self):
         self.assertEqual(self.state.index, 1)
-        self.assertEqual(self.state.actions, self.actions)
         self.assertIsNone(self.state.parent)
         self.assertEqual(self.state.status, DiscreteStateStatus.UNVISITED)
 
@@ -32,14 +30,6 @@ class TestDiscreteState(unittest.TestCase):
         self.state.mark_alive()
         self.assertTrue(self.state.is_visited())
 
-    def test_get_actions(self):
-        self.assertEqual(self.state.get_actions(), self.actions)
-
-    def test_add_action(self):
-        new_action = Mock(spec=Action)
-        self.state.add_action(new_action)
-        self.assertIn(new_action, self.state.actions)
-
     def test_set_parent(self):
         parent = Mock(spec=DiscreteState)
         self.state.set_parent(parent)
@@ -54,8 +44,8 @@ class TestDiscreteState(unittest.TestCase):
 class TestDiscreteStateSpace(unittest.TestCase):
     def setUp(self):
         self.space = DiscreteStateSpace()
-        self.state1 = DiscreteState(index=1, actions=[])
-        self.state2 = DiscreteState(index=2, actions=[])
+        self.state1 = DiscreteState(index=1)
+        self.state2 = DiscreteState(index=2)
 
     def test_add_state(self):
         self.space.add_state(self.state1)
