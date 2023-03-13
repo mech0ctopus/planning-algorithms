@@ -1,4 +1,4 @@
-# Example 2.1: A robot moving on a 2D grid
+# Example 2.1: A robot moving on a 2d grid
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 from planning.search.abstract import SearchProblem, StateTransitionFunction
@@ -30,16 +30,16 @@ class GridStateTransitionFunction(StateTransitionFunction):
         return state_space.space[next_state_idx]
 
 
-class Grid2DSearchProblem(SearchProblem):
+class Grid2dSearchProblem(SearchProblem):
     def get_actions(self, state: DiscreteState) -> List[Action]:
         x, y = state.index
         # Non-Border cells
         if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1):
             actions = [MoveOn2dGrid(-1, 0),
-                        MoveOn2dGrid(1, 0),
-                        MoveOn2dGrid(0, -1),
-                        MoveOn2dGrid(0, 1),
-                        ]
+                       MoveOn2dGrid(1, 0),
+                       MoveOn2dGrid(0, -1),
+                       MoveOn2dGrid(0, 1),
+                       ]
         else:
             actions = []
             if x == 0:
@@ -91,7 +91,7 @@ def plot_results(state_space, plan):
 if __name__ == '__main__':
     # Define search problem
     state_space = build_state_space()
-    problem = Grid2DSearchProblem(state_space=state_space,
+    problem = Grid2dSearchProblem(state_space=state_space,
                                   goal_space=build_goal_space(),
                                   transition_function=GridStateTransitionFunction(),
                                   initial_state=state_space.space[INITIAL_STATE_IDX]
