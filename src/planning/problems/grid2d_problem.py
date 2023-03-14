@@ -2,14 +2,12 @@
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 from planning.search.abstract import SearchProblem, StateTransitionFunction
-from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 import numpy as np
 from typing import List
 
 # TODO: Resolve zero-index / one-index issue. Plot is off by 1 spot in X and Y
-# TODO: Cleanup / Refactor this example.
-
+# TODO: Cleanup / Refactor this into a class.
 XMAX = 15
 YMAX = 15
 INITIAL_STATE_IDX = (1,2)
@@ -73,6 +71,16 @@ def build_xy_grid(state_space):
             grid[x, y] = state_space.space[(x,y)].is_visited()
     return grid
 
+def build_problem():
+    # Define search problem
+    state_space = build_state_space()
+    problem = Grid2dSearchProblem(state_space=state_space,
+                                  goal_space=build_goal_space(),
+                                  transition_function=GridStateTransitionFunction(),
+                                  initial_state=state_space.space[INITIAL_STATE_IDX]
+                                  )
+    return state_space, problem
+
 def plot_results(state_space, plan):
     grid = build_xy_grid(state_space)
 
@@ -85,26 +93,4 @@ def plot_results(state_space, plan):
     plt.imshow(grid.T, origin="lower")
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.savefig("2d_grid.png")
-
-
-if __name__ == '__main__':
-    # Define search problem
-    state_space = build_state_space()
-    problem = Grid2dSearchProblem(state_space=state_space,
-                                  goal_space=build_goal_space(),
-                                  transition_function=GridStateTransitionFunction(),
-                                  initial_state=state_space.space[INITIAL_STATE_IDX]
-                                  )
-    # Solve search problem
-    solver = BreadthFirstForwardSearchAlgorithm(problem, verbose=False)
-    success = solver.search()
-    print(f"Success: {success}")
-    # Get Plan
-    plan = solver.get_plan()
-
-    # Print / Plot results
-    print("Plan:")
-    for state_idx in plan:
-        print(state_idx)
-    plot_results(state_space, plan)
+    plt.savefig("grid2d.png")

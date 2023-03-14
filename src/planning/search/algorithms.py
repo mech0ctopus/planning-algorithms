@@ -1,8 +1,8 @@
 from planning.search.abstract import PriorityQueue
-from planning.search.abstract import SearchAlgorithm, SearchProblem, StateTransitionFunction
+from planning.search.abstract import SearchAlgorithm, SearchProblem
 from planning.search.primitives import SearchResult
 from planning.search.queue import FIFO, LIFO
-from planning.space.primitives import DiscreteState, DiscreteStateSpace
+from planning.space.primitives import DiscreteState
 
 from abc import abstractmethod
 from copy import deepcopy
