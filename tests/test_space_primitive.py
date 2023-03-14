@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace, DiscreteStateStatus
+from planning.space.primitives import DiscreteState, DiscreteStateSpace, DiscreteStateStatus
 
 
 class TestDiscreteState(unittest.TestCase):
