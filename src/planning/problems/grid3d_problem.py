@@ -98,9 +98,9 @@ def plot_results(state_space, plan):
     #                 colors[x, y, z] = visited_color
 
     # PLAN
-    for state_idx in plan:
-        grid[state_idx[0]][state_idx[1]][state_idx[2]] = 3
-        colors[state_idx[0]][state_idx[1]][state_idx[2]] = plan_color
+    for state in plan:
+        grid[state.index[0]][state.index[1]][state.index[2]] = 3
+        colors[state.index[0]][state.index[1]][state.index[2]] = plan_color
 
     # INITIAL
     grid[INITIAL_STATE_IDX[0]][INITIAL_STATE_IDX[1]][INITIAL_STATE_IDX[2]] = -1
@@ -114,26 +114,13 @@ def plot_results(state_space, plan):
 
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.savefig("3d_grid.png")
+    plt.savefig("grid3d.png")
 
-
-if __name__ == '__main__':
-    # Define search problem
+def build_problem():
     state_space = build_state_space()
     problem = Grid3dSearchProblem(state_space=state_space,
                                   goal_space=build_goal_space(),
                                   transition_function=GridStateTransitionFunction(),
                                   initial_state = state_space.space[INITIAL_STATE_IDX]
                                   )
-    # Solve search problem
-    solver = BreadthFirstForwardSearchAlgorithm(problem, verbose=False)
-    success = solver.search()
-    print(f"Success: {success}")
-    # Get Plan
-    plan = solver.get_plan()
-
-    # Print / Plot results
-    print("Plan:")
-    for state_idx in plan:
-        print(state_idx)
-    plot_results(state_space, plan)
+    return state_space, problem

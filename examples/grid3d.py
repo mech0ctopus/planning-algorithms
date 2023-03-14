@@ -1,4 +1,4 @@
-from planning.problems.grid2d_problem import build_problem, plot_results
+from planning.problems.grid3d_problem import build_problem, plot_results
 from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
 
 

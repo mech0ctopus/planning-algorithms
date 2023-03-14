@@ -3,17 +3,13 @@ import unittest
 from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
 from planning.search.algorithms import DepthFirstForwardSearchAlgorithm
 from planning.search.primitives import SearchResult
-from planning.problems.grid2d_problem import build_problem
+from planning.problems import grid2d_problem, grid3d_problem
 
 class TestForwardSearchAlgorithms(unittest.TestCase):
     def setUp(self) -> None:
         self.forward_search_impls = {"BreadthFirst": BreadthFirstForwardSearchAlgorithm,
                                     #  "DepthFirst": DepthFirstForwardSearchAlgorithm,
                                      }
-
-    def test_solves_grid2d(self):
-        _, problem = build_problem()
-        self.assert_all_algorithms_solve_problem(problem)
 
     def assert_all_algorithms_solve_problem(self, problem):
         for name, algorithm in self.forward_search_impls.items():
@@ -34,9 +30,13 @@ class TestForwardSearchAlgorithms(unittest.TestCase):
         self.assertTrue(problem.goal_space.contains(plan[-1]),
                         f"Plan from {algorithm_name} does not end in the goal space!")
 
-    # def test_solves_grid3d(self):
-    #     problem = 
-    #     self.assert_all_algorithms_solve_problem(problem)
+    def test_solves_grid2d(self):
+        _, problem = grid2d_problem.build_problem()
+        self.assert_all_algorithms_solve_problem(problem)
+
+    def test_solves_grid3d(self):
+        _, problem = grid3d_problem.build_problem()
+        self.assert_all_algorithms_solve_problem(problem)
 
 
 if __name__ == "__main__":
