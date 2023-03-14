@@ -76,9 +76,9 @@ class SearchAlgorithm(metaclass=ABCMeta):
     def get_next_state(self, action: Action) -> DiscreteState:
         return self.problem.transition_function.get_next_state(self.current_state, action, self.problem.state_space)
 
-    def get_plan(self) -> List[Tuple]:
+    def get_plan(self) -> List[DiscreteState]:
         """
-        Returns a list of state indices from initial_state to goal_state
+        Returns a list of states from initial_state to goal_state
 
         Assumes `search` has already been called.
         """
@@ -86,7 +86,10 @@ class SearchAlgorithm(metaclass=ABCMeta):
         planning_state = self.current_state
 
         while (parent := planning_state.get_parent()) is not None:
-            plan.append(planning_state.index)
+            plan.append(planning_state)
             planning_state = parent
+
+        # Append initial state
+        plan.append(planning_state)
 
         return list(reversed(plan))

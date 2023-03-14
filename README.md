@@ -25,6 +25,8 @@ python 2d_grid.py
 - Consider moving problems into a `planning/problems` folder so they can be imported.
 - Add plot results to problem class
 - Integrate "Cost" calculations.
+- Tests
+    - Resolve why DepthFirst is not working in test
 - Implement:
     - Dijkstra's
     - A-Star

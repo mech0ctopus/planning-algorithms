@@ -46,6 +46,7 @@ class TestDiscreteStateSpace(unittest.TestCase):
         self.space = DiscreteStateSpace()
         self.state1 = DiscreteState(index=1)
         self.state2 = DiscreteState(index=2)
+        self.state3 = DiscreteState(index=(2,3))
 
     def test_add_state(self):
         self.space.add_state(self.state1)
@@ -54,8 +55,10 @@ class TestDiscreteStateSpace(unittest.TestCase):
 
     def test_contains(self):
         self.space.add_state(self.state1)
+        self.space.add_state(self.state3)
         self.assertTrue(self.space.contains(self.state1))
         self.assertFalse(self.space.contains(self.state2))
+        self.assertTrue(self.space.contains(self.state3))
 
 
 if __name__ == "__main__":

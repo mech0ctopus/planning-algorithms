@@ -84,8 +84,8 @@ def build_problem():
 def plot_results(state_space, plan):
     grid = build_xy_grid(state_space)
 
-    for state_idx in plan:
-        grid[state_idx[0]][state_idx[1]] = 3
+    for state in plan:
+        grid[state.index[0]][state.index[1]] = 3
 
     grid[INITIAL_STATE_IDX[0]][INITIAL_STATE_IDX[1]] = -1
     grid[GOAL_STATE_IDX[0]][GOAL_STATE_IDX[1]] = 2

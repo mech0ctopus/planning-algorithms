@@ -14,6 +14,6 @@ if __name__ == '__main__':
 
     # Print / Plot results
     print("Plan:")
-    for state_idx in plan:
-        print(state_idx)
+    for state in plan:
+        print(state.index)
     plot_results(state_space, plan)
