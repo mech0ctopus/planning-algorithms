@@ -14,10 +14,10 @@ class Action(metaclass=ABCMeta):
 
 
 class DiscreteState:
-    def __init__(self, index: Any, parent=None) -> None:
+    def __init__(self, index: Any, parent=None, status=DiscreteStateStatus.UNVISITED) -> None:
         self.index = index
         self.parent = parent
-        self.status = DiscreteStateStatus.UNVISITED
+        self.status = status
 
     def __repr__(self) -> str:
         return f"index={self.index}. status={self.status}"
@@ -35,10 +35,18 @@ class DiscreteState:
         return self.status != DiscreteStateStatus.UNVISITED
 
     def set_parent(self, parent) -> None:
-        self.parent = parent
+        self.parent = DiscreteState.copy(parent)
 
     def get_parent(self) -> None:
         return self.parent
+
+    @staticmethod
+    def copy(state):
+        """
+        Construct a new state object to avoid `RecursionError`s related to deepcopy.
+        This method is also substantially faster than creating `deepcopy`s.
+        """
+        return DiscreteState(index=state.index, parent=state.parent, status=state.status)
 
 
 class DiscreteStateSpace:

@@ -5,7 +5,6 @@ from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState
 
 from abc import abstractmethod
-from copy import deepcopy
 
 # TODO: Add logic for checking if a state is `alive` or `dead` per p.33
 # TODO: Raise exception if search fails (instead of Return code)
@@ -37,7 +36,7 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
 
             for action in self.get_current_actions():
                 next_state = self.get_next_state(action)
-                next_state.set_parent(deepcopy(self.current_state))
+                next_state.set_parent(self.current_state)
                 # TODO: Store action taken from current_state -> next_state
                 #       so that we can return it with our plan later on.
                 # TODO: Calculate cost for taken this action.
