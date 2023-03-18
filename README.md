@@ -24,7 +24,6 @@ python grid3d.py
 
 ### TODO
 - Implement bi-directional search
-- Put Forward/Backward search algorithms in different files
 
 ### TODO Later
 - Define a better `SearchProblem` interface

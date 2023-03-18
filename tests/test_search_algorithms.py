@@ -1,9 +1,7 @@
 import unittest
 
-from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
-from planning.search.algorithms import DepthFirstForwardSearchAlgorithm
-from planning.search.algorithms import BreadthFirstBackwardSearchAlgorithm
-from planning.search.algorithms import DepthFirstBackwardSearchAlgorithm
+from planning.search.backward import *
+from planning.search.forward import *
 
 from planning.problems import grid2d_problem, grid3d_problem
 
@@ -36,6 +34,7 @@ class SearchAlgorithmsTestBase(unittest.TestCase):
                          f"Plan from {algorithm_name} does not start at the initial state!")
         self.assertTrue(problem.goal_space.contains(plan[-1]),
                         f"Plan from {algorithm_name} does not end in the goal space!")
+
 
 class TestForwardSearchAlgorithms(SearchAlgorithmsTestBase):
     def setUp(self) -> None:

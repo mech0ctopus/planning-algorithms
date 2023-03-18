@@ -1,5 +1,6 @@
 from planning.problems.grid2d_problem import build_problem, plot_results
-from planning.search.algorithms import *
+from planning.search.backward import *
+from planning.search.forward import *
 
 
 if __name__ == '__main__':
