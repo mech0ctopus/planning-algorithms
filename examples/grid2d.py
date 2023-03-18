@@ -6,7 +6,7 @@ if __name__ == '__main__':
     # Define search problem
     state_space, problem = build_problem()
     # Solve search problem
-    solver = BreadthFirstForwardSearchAlgorithm(problem=False)
+    solver = BreadthFirstForwardSearchAlgorithm(problem)
     success = solver.search()
     print(f"Success: {success}")
     # Get Plan
