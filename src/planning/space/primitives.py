@@ -31,6 +31,10 @@ class DiscreteState:
     def mark_dead(self) -> None:
         self.status = DiscreteStateStatus.DEAD
 
+    def mark_visited(self) -> None:
+        # TODO: Algo states to "mark as visited", not "alive". Is this line correct?
+        self.mark_alive()
+
     def is_visited(self) -> bool:
         return self.status != DiscreteStateStatus.UNVISITED
 

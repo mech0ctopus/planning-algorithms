@@ -6,8 +6,6 @@ from planning.space.primitives import DiscreteState
 
 from abc import abstractmethod
 
-# TODO: Add logic for checking if a state is `alive` or `dead` per p.33
-# TODO: Raise exception if search fails (instead of Return code)
 
 class ForwardSearchAlgorithm(SearchAlgorithm):
     """
@@ -23,8 +21,7 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
 
     def search(self) -> SearchResult:
         self.priority_queue.add(self.problem.initial_state)
-        # TODO: Algo states to "mark as visited", not "alive". Is this line correct?
-        self.problem.initial_state.mark_alive()
+        self.problem.initial_state.mark_visited()
 
         while not self.priority_queue.is_empty():
             self.current_state = self.priority_queue.get()
@@ -41,8 +38,7 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
                 #       so that we can return it with our plan later on.
                 # TODO: Calculate cost for taken this action.
                 if not next_state.is_visited():
-                    # TODO: Algo states to "mark as visited", not "alive". Is this line correct?
-                    next_state.mark_alive()
+                    next_state.mark_visited
                     self.priority_queue.add(next_state)
                 else:
                     self.resolve_duplicate(next_state)

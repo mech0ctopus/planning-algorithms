@@ -34,3 +34,5 @@ python grid3d.py
     - Dijkstra's
     - A-Star
     - IterativeDeepening
+- Raise exception if search fails (instead of Return code)
+- Add logic to `ForwardSearch` for checking if a state is `alive` or `dead` per p.33
