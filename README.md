@@ -23,18 +23,21 @@ python grid3d.py
 ```
 
 ### TODO
-- Identify a better design pattern to use for constructing Forward/Backward versions
-  of the same search algo.
-    - Forward and Backward search should:
-        - Either implement an interface
-        - OR be passed in as args to a factory
+- Implement bi-directional search
+- Put Forward/Backward search algorithms in different files
 
 ### TODO Later
+- Define a better `SearchProblem` interface
 - Integrate "Cost" calculations.
-- Add plot results to problem class
+
+### Maybe Later
+- Identify a better design pattern to use for constructing Forward/Backward versions
+  of the same search algo. (Factory?)
+    - Should Forward, Backward, and Bidirectional search be consolidated into a Unified interface?
 - Implement:
     - Dijkstra's
     - A-Star
     - IterativeDeepening
+- Add plot results to problem class
 - Raise exception if search fails (instead of Return code)
 - Add logic to `ForwardSearch` for checking if a state is `alive` or `dead` per p.33
