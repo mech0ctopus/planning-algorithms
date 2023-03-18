@@ -2,6 +2,9 @@ import unittest
 
 from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
 from planning.search.algorithms import DepthFirstForwardSearchAlgorithm
+from planning.search.algorithms import BreadthFirstBackwardSearchAlgorithm
+from planning.search.algorithms import DepthFirstBackwardSearchAlgorithm
+
 from planning.search.primitives import SearchResult
 from planning.problems import grid2d_problem, grid3d_problem
 
@@ -32,13 +35,23 @@ class TestSearchAlgorithms(unittest.TestCase):
 
 
 class TestForwardSearchAlgorithms(TestSearchAlgorithms):
-    def test_breadthfirst_solves_all_problems(self):
+    def test_forward_breadthfirst_solves_all_problems(self):
         self.assert_algorithm_solves_all_problems(name="BreadthFirst",
                                                   algorithm=BreadthFirstForwardSearchAlgorithm)
 
-    def test_depthfirst_solves_all_problems(self):
+    def test_forward_depthfirst_solves_all_problems(self):
         self.assert_algorithm_solves_all_problems(name="DepthFirst",
                                                   algorithm=DepthFirstForwardSearchAlgorithm)
+
+
+class TestBackwardSearchAlgorithms(TestSearchAlgorithms):
+    def test_backward_breadthfirst_solves_all_problems(self):
+        self.assert_algorithm_solves_all_problems(name="BreadthFirst",
+                                                  algorithm=BreadthFirstBackwardSearchAlgorithm)
+
+    def test_backward_depthfirst_solves_all_problems(self):
+        self.assert_algorithm_solves_all_problems(name="DepthFirst",
+                                                  algorithm=DepthFirstBackwardSearchAlgorithm)
 
 
 if __name__ == "__main__":

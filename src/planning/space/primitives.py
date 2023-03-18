@@ -1,6 +1,6 @@
 from abc import ABCMeta
 from enum import Enum
-from typing import Any, List
+from typing import Any
 
 
 class DiscreteStateStatus(Enum):
@@ -62,6 +62,10 @@ class DiscreteStateSpace:
         for _, state in self.space.items():
             s += str(state) + "\n"
         return s
+
+    def __iter__(self):
+        for state in self.space.values():
+            yield state
 
     def add_state(self, state: DiscreteState) -> None:
         self.space[state.index] = state
