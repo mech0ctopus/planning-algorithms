@@ -6,18 +6,14 @@ from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 
 
 class StateTransitionFunction(metaclass=ABCMeta):
-    pass
-
-class ForwardStateTransitionFunction(StateTransitionFunction):
     @abstractmethod
     def get_next_state(self, current_state: DiscreteState, action: Action) -> DiscreteState:
         raise NotImplementedError
 
-
-class BackwardStateTransitionFunction(StateTransitionFunction):
     @abstractmethod
     def get_previous_state(self, future_state: DiscreteState, action: Action) -> DiscreteState:
         raise NotImplementedError
+
 
 class PriorityQueue(metaclass=ABCMeta):
     @abstractmethod
@@ -48,7 +44,14 @@ class SearchProblem(metaclass=ABCMeta):
     @abstractmethod
     def get_actions(self, state: DiscreteState) -> List[Action]:
         """
-        U(x). Return all actions available for the current state.
+        U(x). Return all actions available for the given state.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_previous_actions(self, state: DiscreteState) -> List[Action]:
+        """
+        U(x). Return all previous actions available for the given state.
         """
         raise NotImplementedError
 
@@ -90,9 +93,9 @@ class SearchAlgorithm(metaclass=ABCMeta):
     def get_next_state(self, action: Action) -> DiscreteState:
         return self.problem.transition_function.get_next_state(self.current_state, action, self.problem.state_space)
 
-    # TODO: Implement me
-    def get_previous_state(self, action: Action) -> DiscreteState:
-        raise NotImplementedError
+    def get_previous_state(self, future_state: DiscreteState, action: Action) -> DiscreteState:
+        return self.problem.transition_function.get_previous_state(future_state, action,
+                                                                   self.problem.state_space)
 
     @abstractmethod
     def get_plan(self) -> List[DiscreteState]:

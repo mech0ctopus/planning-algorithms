@@ -1,7 +1,7 @@
 # A robot moving on a 3d grid
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
-from planning.search.abstract import SearchProblem, ForwardStateTransitionFunction
+from planning.search.abstract import SearchProblem, StateTransitionFunction
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d, Axes3D  # noqa
 import numpy as np
@@ -24,13 +24,20 @@ class MoveOn3dGrid(Action):
         self.z = z
 
 
-class ForwardGridStateTransitionFunction(ForwardStateTransitionFunction):
+class GridStateTransitionFunction(StateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: MoveOn3dGrid,
                        state_space: DiscreteStateSpace) -> DiscreteState:      
         next_state_idx = (current_state.index[0] + action.x,
                           current_state.index[1] + action.y,
                           current_state.index[2] + action.z)
         return state_space.space[next_state_idx]
+
+    def get_previous_state(self, future_state: DiscreteState, action: MoveOn3dGrid,
+                           state_space: DiscreteStateSpace) -> DiscreteState:      
+        previous_state_idx = (future_state.index[0] - action.x,
+                              future_state.index[1] - action.y,
+                              future_state.index[2] - action.z)
+        return state_space.space[previous_state_idx]
 
 
 class Grid3dSearchProblem(SearchProblem):
@@ -59,6 +66,33 @@ class Grid3dSearchProblem(SearchProblem):
                 actions.append(MoveOn3dGrid(0, -1, 0))
             if z == ZMAX:
                 actions.append(MoveOn3dGrid(0, 0, -1))
+        return actions
+
+    def get_previous_actions(self, state: DiscreteState) -> List[Action]:
+        x, y, z = state.index
+        # Non-Border cells
+        if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1) and  0 < z < (ZMAX - 1):
+            actions = [MoveOn3dGrid(-1, 0, 0),
+                       MoveOn3dGrid(1, 0, 0),
+                       MoveOn3dGrid(0, -1, 0),
+                       MoveOn3dGrid(0, 1, 0),
+                       MoveOn3dGrid(0, 0, -1),
+                       MoveOn3dGrid(0, 0, 1),
+                       ]
+        else:
+            actions = []
+            if x == 0:
+                actions.append(MoveOn3dGrid(-1, 0, 0))
+            if y == 0:
+                actions.append(MoveOn3dGrid(0, -1, 0))
+            if z == 0:
+                actions.append(MoveOn3dGrid(0, 0, -1))
+            if x == XMAX:
+                actions.append(MoveOn3dGrid(1, 0, 0))
+            if y == YMAX:
+                actions.append(MoveOn3dGrid(0, 1, 0))
+            if z == ZMAX:
+                actions.append(MoveOn3dGrid(0, 0, 1))
         return actions
 
 def build_state_space():
@@ -119,7 +153,7 @@ def build_problem():
     state_space = build_state_space()
     problem = Grid3dSearchProblem(state_space=state_space,
                                   goal_space=build_goal_space(),
-                                  transition_function=ForwardGridStateTransitionFunction(),
+                                  transition_function=GridStateTransitionFunction(),
                                   initial_state = state_space.space[INITIAL_STATE_IDX]
                                   )
     return state_space, problem

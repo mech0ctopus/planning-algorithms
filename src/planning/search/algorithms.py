@@ -76,7 +76,7 @@ class BackwardSearchAlgorithm(SearchAlgorithm):
 
             #### 3. Apply an action
             for action in self.get_previous_actions():
-                self.current_state = self.get_previous_state(action)
+                self.current_state = self.get_previous_state(next_state, action)
                 self.current_state.set_parent(next_state)
  
                 #### 4. Insert a Directed Edge into the Graph
