@@ -5,17 +5,11 @@ from planning.search.algorithms import DepthFirstForwardSearchAlgorithm
 from planning.search.primitives import SearchResult
 from planning.problems import grid2d_problem, grid3d_problem
 
-class TestForwardSearchAlgorithms(unittest.TestCase):
+
+class TestSearchAlgorithms(unittest.TestCase):
     def setUp(self) -> None:
-        self.problems = [grid2d_problem.build_problem(), grid3d_problem.build_problem()]
-
-    def test_breadthfirst_solves_all_problems(self):
-        self.assert_algorithm_solves_all_problems(name="BreadthFirst",
-                                                  algorithm=BreadthFirstForwardSearchAlgorithm)
-
-    def test_depthfirst_solves_all_problems(self):
-        self.assert_algorithm_solves_all_problems(name="DepthFirst",
-                                                  algorithm=DepthFirstForwardSearchAlgorithm)
+        self.problems = [grid2d_problem.build_problem(),
+                         grid3d_problem.build_problem()]
 
     def assert_algorithm_solves_all_problems(self, name, algorithm):
         for _, problem in self.problems:
@@ -35,6 +29,16 @@ class TestForwardSearchAlgorithms(unittest.TestCase):
                          f"Plan from {algorithm_name} does not start at the initial state!")
         self.assertTrue(problem.goal_space.contains(plan[-1]),
                         f"Plan from {algorithm_name} does not end in the goal space!")
+
+
+class TestForwardSearchAlgorithms(TestSearchAlgorithms):
+    def test_breadthfirst_solves_all_problems(self):
+        self.assert_algorithm_solves_all_problems(name="BreadthFirst",
+                                                  algorithm=BreadthFirstForwardSearchAlgorithm)
+
+    def test_depthfirst_solves_all_problems(self):
+        self.assert_algorithm_solves_all_problems(name="DepthFirst",
+                                                  algorithm=DepthFirstForwardSearchAlgorithm)
 
 
 if __name__ == "__main__":
