@@ -5,7 +5,6 @@ from planning.search.algorithms import DepthFirstForwardSearchAlgorithm
 from planning.search.algorithms import BreadthFirstBackwardSearchAlgorithm
 from planning.search.algorithms import DepthFirstBackwardSearchAlgorithm
 
-from planning.search.primitives import SearchResult
 from planning.problems import grid2d_problem, grid3d_problem
 
 
@@ -21,8 +20,7 @@ class TestSearchAlgorithms(unittest.TestCase):
     def assert_algorithm_solves_problem(self, algorithm_name, algorithm, problem):
         solver = algorithm(problem)
         success = solver.search()
-        self.assertEqual(success, SearchResult.SUCCESS,
-                         f"{algorithm_name} solver failed!")
+        self.assertTrue(success, f"{algorithm_name} solver failed!")
 
         plan = solver.get_plan()
         self.assert_plan_connects_initial_and_goal_states(plan, algorithm_name, problem)

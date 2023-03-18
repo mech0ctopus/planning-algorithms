@@ -23,13 +23,14 @@ python grid3d.py
 ```
 
 ### TODO
-- Finish `BackwardSearchAlgorithm` implementation
-- Forward and Backward search should:
-    - Either implement an interface
-    - OR be passed in as args to a factory
-- Integrate "Cost" calculations.
+- Identify a better design pattern to use for constructing Forward/Backward versions
+  of the same search algo.
+    - Forward and Backward search should:
+        - Either implement an interface
+        - OR be passed in as args to a factory
 
 ### TODO Later
+- Integrate "Cost" calculations.
 - Add plot results to problem class
 - Implement:
     - Dijkstra's

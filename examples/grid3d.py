@@ -1,5 +1,5 @@
 from planning.problems.grid3d_problem import build_problem, plot_results
-from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
+from planning.search.algorithms import *
 
 
 if __name__ == '__main__':

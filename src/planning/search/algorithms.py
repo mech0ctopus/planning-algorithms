@@ -1,5 +1,4 @@
 from planning.search.abstract import SearchAlgorithm, SearchProblem
-from planning.search.primitives import SearchResult
 from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState
 
@@ -10,7 +9,7 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
     """
     Algorithm described in Figure 2.4 of Planning Algorithms by LaValle.
     """
-    def search(self) -> SearchResult:
+    def search(self) -> bool:
         #### 1. Initialization
         self.priority_queue.add(self.problem.initial_state)
         self.problem.initial_state.mark_visited()
@@ -21,7 +20,7 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
 
             #### 5. Check for solution
             if self.has_succeeded():
-                return SearchResult.SUCCESS
+                return True
 
             #### 3. Apply an action
             for action in self.get_current_actions():
@@ -38,7 +37,7 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
                 else:
                     self.resolve_duplicate(next_state)
 
-        return SearchResult.FAILURE
+        return False
 
     def has_succeeded(self) -> bool:
         return self.problem.goal_space.contains(self.current_state)
@@ -60,7 +59,7 @@ class BackwardSearchAlgorithm(SearchAlgorithm):
     """
     Algorithm described in Figure 2.6 of Planning Algorithms by LaValle.
     """
-    def search(self) -> SearchResult:
+    def search(self) -> bool:
         #### 1. Initialization
         for goal_state in self.problem.goal_space:
             self.priority_queue.add(goal_state)
@@ -72,10 +71,10 @@ class BackwardSearchAlgorithm(SearchAlgorithm):
 
             #### 5. Check for solution
             if self.has_succeeded():
-                return SearchResult.SUCCESS
+                return True
 
             #### 3. Apply an action
-            for action in self.get_previous_actions():
+            for action in self.get_previous_actions(next_state):
                 self.current_state = self.get_previous_state(next_state, action)
                 self.current_state.set_parent(next_state)
  
@@ -86,7 +85,7 @@ class BackwardSearchAlgorithm(SearchAlgorithm):
                 else:
                     self.resolve_duplicate(self.current_state)
 
-        return SearchResult.FAILURE
+        return False
 
     def has_succeeded(self) -> bool:
         return self.current_state == self.problem.initial_state
@@ -99,8 +98,8 @@ class BackwardSearchAlgorithm(SearchAlgorithm):
             plan.append(planning_state)
             planning_state = parent
 
-        # Append initial state
-        plan.append(planning_state.parent)
+        plan.append(planning_state)
+        plan.append(parent)
 
         return plan
 
@@ -146,3 +145,23 @@ class AStarForwardSearchAlgorithm(ForwardSearchAlgorithm):
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         # TODO: See bottom of P.36-37
         raise NotImplementedError
+
+#### Backward
+class BreadthFirstBackwardSearchAlgorithm(BackwardSearchAlgorithm):
+    def __init__(self, problem: SearchProblem) -> None:
+        # Specify FIFO for all BreadthFirst
+        priority_queue_type = FIFO
+        super().__init__(problem, priority_queue_type)
+
+    def resolve_duplicate(self, current_state: DiscreteState) -> None:
+        pass
+
+
+class DepthFirstBackwardSearchAlgorithm(BackwardSearchAlgorithm):
+    def __init__(self, problem: SearchProblem) -> None:
+        # Specify LIFO for all DepthFirst
+        priority_queue_type = LIFO
+        super().__init__(problem, priority_queue_type)
+
+    def resolve_duplicate(self, current_state: DiscreteState) -> None:
+        pass

@@ -1,7 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import List
-from planning.search.primitives import SearchResult
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 
 
@@ -77,7 +76,7 @@ class SearchAlgorithm(metaclass=ABCMeta):
         self.plan = [] # list of state indices
 
     @abstractmethod
-    def search(self) -> SearchResult:
+    def search(self) -> bool:
         raise NotImplementedError
 
     @abstractmethod
@@ -87,8 +86,8 @@ class SearchAlgorithm(metaclass=ABCMeta):
     def get_current_actions(self) -> List[Action]:
         return self.problem.get_actions(self.current_state)
 
-    def get_previous_actions(self) -> List[Action]:
-        return self.problem.get_previous_actions(self.current_state)
+    def get_previous_actions(self, future_state: DiscreteState) -> List[Action]:
+        return self.problem.get_previous_actions(future_state)
 
     def get_next_state(self, action: Action) -> DiscreteState:
         return self.problem.transition_function.get_next_state(self.current_state, action, self.problem.state_space)
@@ -107,5 +106,5 @@ class SearchAlgorithm(metaclass=ABCMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def resolve_duplicate(self, next_state: DiscreteState) -> None:
+    def resolve_duplicate(self, state: DiscreteState) -> None:
         raise NotImplementedError
