@@ -2,7 +2,6 @@
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 from planning.search.abstract import SearchProblem, StateTransitionFunction
-from planning.search.algorithms import BreadthFirstForwardSearchAlgorithm
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d, Axes3D  # noqa
 import numpy as np
