@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List
 from planning.search.primitives import SearchResult
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 
@@ -52,13 +52,16 @@ class SearchAlgorithm(metaclass=ABCMeta):
     Notation:
     X: self.state_space
     U: self.action_space
+    Q: self.priority_queue
+    x': next_state
     f(x,u): self.transition_function
     x_I: self.initial_state
     X_G: self.goal_space
     x: self.current_state
     """
-    def __init__(self, problem: SearchProblem, verbose: bool) -> None:
+    def __init__(self, problem: SearchProblem, priority_queue_type: PriorityQueue, verbose: bool) -> None:
         self.problem = problem
+        self.priority_queue = priority_queue_type()
         self.verbose = verbose
         self.current_state = None
         self.plan = [] # list of state indices
@@ -93,3 +96,7 @@ class SearchAlgorithm(metaclass=ABCMeta):
         plan.append(planning_state)
 
         return list(reversed(plan))
+
+    @abstractmethod
+    def resolve_duplicate(self, next_state: DiscreteState) -> None:
+        raise NotImplementedError
