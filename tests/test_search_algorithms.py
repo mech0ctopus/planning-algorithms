@@ -8,13 +8,19 @@ from planning.search.algorithms import DepthFirstBackwardSearchAlgorithm
 from planning.problems import grid2d_problem, grid3d_problem
 
 
-class TestSearchAlgorithms(unittest.TestCase):
-    def setUp(self) -> None:
-        self.problems = [grid2d_problem.build_problem(),
-                         grid3d_problem.build_problem()]
+class SearchAlgorithmsTestBase(unittest.TestCase):
+    def get_problems(self) -> None:
+        return [
+                grid2d_problem.build_problem(),
+                grid3d_problem.build_problem(),
+                ]
+
+    def assert_all_algorithms_solve_all_problems(self):
+        for name, algorithm in self.algorithms.items():
+          self.assert_algorithm_solves_all_problems(name=name, algorithm=algorithm)  
 
     def assert_algorithm_solves_all_problems(self, name, algorithm):
-        for _, problem in self.problems:
+        for _, problem in self.get_problems():
             self.assert_algorithm_solves_problem(name, algorithm, problem)
 
     def assert_algorithm_solves_problem(self, algorithm_name, algorithm, problem):
@@ -31,26 +37,26 @@ class TestSearchAlgorithms(unittest.TestCase):
         self.assertTrue(problem.goal_space.contains(plan[-1]),
                         f"Plan from {algorithm_name} does not end in the goal space!")
 
+class TestForwardSearchAlgorithms(SearchAlgorithmsTestBase):
+    def setUp(self) -> None:
+        self.algorithms = {
+                           "BreadthFirst": BreadthFirstForwardSearchAlgorithm,
+                           "DepthFirst": DepthFirstForwardSearchAlgorithm,
+                           }
 
-class TestForwardSearchAlgorithms(TestSearchAlgorithms):
-    def test_forward_breadthfirst_solves_all_problems(self):
-        self.assert_algorithm_solves_all_problems(name="BreadthFirst",
-                                                  algorithm=BreadthFirstForwardSearchAlgorithm)
-
-    def test_forward_depthfirst_solves_all_problems(self):
-        self.assert_algorithm_solves_all_problems(name="DepthFirst",
-                                                  algorithm=DepthFirstForwardSearchAlgorithm)
+    def test_forward_search(self):
+        self.assert_all_algorithms_solve_all_problems()
 
 
-class TestBackwardSearchAlgorithms(TestSearchAlgorithms):
-    def test_backward_breadthfirst_solves_all_problems(self):
-        self.assert_algorithm_solves_all_problems(name="BreadthFirst",
-                                                  algorithm=BreadthFirstBackwardSearchAlgorithm)
+class TestBackwardSearchAlgorithms(SearchAlgorithmsTestBase):
+    def setUp(self) -> None:
+        self.algorithms = {
+                           "BreadthFirst": BreadthFirstBackwardSearchAlgorithm,
+                           "DepthFirst": DepthFirstBackwardSearchAlgorithm,
+                           }
 
-    def test_backward_depthfirst_solves_all_problems(self):
-        self.assert_algorithm_solves_all_problems(name="DepthFirst",
-                                                  algorithm=DepthFirstBackwardSearchAlgorithm)
-
+    def test_backward_search(self):
+        self.assert_all_algorithms_solve_all_problems()
 
 if __name__ == "__main__":
     unittest.main()

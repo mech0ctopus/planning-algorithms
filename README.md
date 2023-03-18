@@ -34,6 +34,7 @@ python grid3d.py
 - Identify a better design pattern to use for constructing Forward/Backward versions
   of the same search algo. (Factory?)
     - Should Forward, Backward, and Bidirectional search be consolidated into a Unified interface?
+- Create/Implement more examples
 - Implement:
     - Dijkstra's
     - A-Star
