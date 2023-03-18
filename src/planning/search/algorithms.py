@@ -3,6 +3,8 @@ from planning.search.primitives import SearchResult
 from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState
 
+from typing import List
+
 
 class ForwardSearchAlgorithm(SearchAlgorithm):
     """
@@ -41,6 +43,18 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
     def has_succeeded(self) -> bool:
         return self.problem.goal_space.contains(self.current_state)
 
+    def get_plan(self) -> List[DiscreteState]:
+        plan = []
+        planning_state = self.current_state
+
+        while (parent := planning_state.get_parent()) is not None:
+            plan.append(planning_state)
+            planning_state = parent
+
+        # Append initial state
+        plan.append(planning_state)
+
+        return list(reversed(plan))
 
 class BackwardSearchAlgorithm(SearchAlgorithm):
     """
@@ -60,28 +74,35 @@ class BackwardSearchAlgorithm(SearchAlgorithm):
             if self.has_succeeded():
                 return SearchResult.SUCCESS
 
-        ## TODO: Resume Implementation here. Line 6 of Fig. 2.6
+            #### 3. Apply an action
+            for action in self.get_previous_actions():
+                self.current_state = self.get_previous_state(action)
+                self.current_state.set_parent(next_state)
+ 
+                #### 4. Insert a Directed Edge into the Graph
+                if not self.current_state.is_visited():
+                    self.current_state.mark_visited()
+                    self.priority_queue.add(self.current_state)
+                else:
+                    self.resolve_duplicate(self.current_state)
 
-        #     #### 3. Apply an action
-        #     for action in self.get_current_actions():
-        #         next_state = self.get_next_state(action)
-        #         next_state.set_parent(self.current_state)
-        #         # TODO: Store action taken from current_state -> next_state
-        #         #       so that we can return it with our plan later on.
-        #         # TODO: Calculate cost for taken this action.
-
-        #         #### 4. Insert a Directed Edge into the Graph
-        #         if not next_state.is_visited():
-        #             next_state.mark_visited()
-        #             self.priority_queue.add(next_state)
-        #         else:
-        #             self.resolve_duplicate(next_state)
-
-        # return SearchResult.FAILURE
+        return SearchResult.FAILURE
 
     def has_succeeded(self) -> bool:
         return self.current_state == self.problem.initial_state
 
+    def get_plan(self) -> List[DiscreteState]:
+        plan = []
+        planning_state = self.current_state
+
+        while (parent := planning_state.get_parent()) not in self.problem.goal_space:
+            plan.append(planning_state)
+            planning_state = parent
+
+        # Append initial state
+        plan.append(planning_state.parent)
+
+        return plan
 
 class BreadthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
     def __init__(self, problem: SearchProblem) -> None:

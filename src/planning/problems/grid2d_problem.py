@@ -1,7 +1,7 @@
 # Example 2.1: A robot moving on a 2d grid
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
-from planning.search.abstract import SearchProblem, StateTransitionFunction
+from planning.search.abstract import SearchProblem, ForwardStateTransitionFunction
 import matplotlib.pyplot as plt
 import numpy as np
 from typing import List
@@ -20,13 +20,20 @@ class MoveOn2dGrid(Action):
         self.y = y
 
 
-class GridStateTransitionFunction(StateTransitionFunction):
+class ForwardGridStateTransitionFunction(ForwardStateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: MoveOn2dGrid,
                        state_space: DiscreteStateSpace) -> DiscreteState:      
         next_state_idx = (current_state.index[0] + action.x,
                           current_state.index[1] + action.y)
         return state_space.space[next_state_idx]
 
+
+# class BackwardGridStateTransitionFunction(BackwardStateTransitionFunction):
+#     def get_next_state(self, future_state: DiscreteState, action: MoveOn2dGrid,
+#                        state_space: DiscreteStateSpace) -> DiscreteState:      
+#         next_state_idx = (current_state.index[0] + action.x,
+#                           current_state.index[1] + action.y)
+#         return state_space.space[next_state_idx]
 
 class Grid2dSearchProblem(SearchProblem):
     def get_actions(self, state: DiscreteState) -> List[Action]:
@@ -76,7 +83,7 @@ def build_problem():
     state_space = build_state_space()
     problem = Grid2dSearchProblem(state_space=state_space,
                                   goal_space=build_goal_space(),
-                                  transition_function=GridStateTransitionFunction(),
+                                  transition_function=ForwardGridStateTransitionFunction(),
                                   initial_state=state_space.space[INITIAL_STATE_IDX]
                                   )
     return state_space, problem

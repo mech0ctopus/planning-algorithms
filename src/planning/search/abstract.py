@@ -6,10 +6,18 @@ from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
 
 
 class StateTransitionFunction(metaclass=ABCMeta):
+    pass
+
+class ForwardStateTransitionFunction(StateTransitionFunction):
     @abstractmethod
     def get_next_state(self, current_state: DiscreteState, action: Action) -> DiscreteState:
         raise NotImplementedError
 
+
+class BackwardStateTransitionFunction(StateTransitionFunction):
+    @abstractmethod
+    def get_previous_state(self, future_state: DiscreteState, action: Action) -> DiscreteState:
+        raise NotImplementedError
 
 class PriorityQueue(metaclass=ABCMeta):
     @abstractmethod
@@ -76,26 +84,24 @@ class SearchAlgorithm(metaclass=ABCMeta):
     def get_current_actions(self) -> List[Action]:
         return self.problem.get_actions(self.current_state)
 
+    def get_previous_actions(self) -> List[Action]:
+        return self.problem.get_previous_actions(self.current_state)
+
     def get_next_state(self, action: Action) -> DiscreteState:
         return self.problem.transition_function.get_next_state(self.current_state, action, self.problem.state_space)
 
+    # TODO: Implement me
+    def get_previous_state(self, action: Action) -> DiscreteState:
+        raise NotImplementedError
+
+    @abstractmethod
     def get_plan(self) -> List[DiscreteState]:
         """
         Returns a list of states from initial_state to goal_state
 
         Assumes `search` has already been called.
         """
-        plan = []
-        planning_state = self.current_state
-
-        while (parent := planning_state.get_parent()) is not None:
-            plan.append(planning_state)
-            planning_state = parent
-
-        # Append initial state
-        plan.append(planning_state)
-
-        return list(reversed(plan))
+        raise NotImplementedError
 
     @abstractmethod
     def resolve_duplicate(self, next_state: DiscreteState) -> None:

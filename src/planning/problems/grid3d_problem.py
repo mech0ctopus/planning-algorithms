@@ -1,7 +1,7 @@
 # A robot moving on a 3d grid
 
 from planning.space.primitives import Action, DiscreteState, DiscreteStateSpace
-from planning.search.abstract import SearchProblem, StateTransitionFunction
+from planning.search.abstract import SearchProblem, ForwardStateTransitionFunction
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d, Axes3D  # noqa
 import numpy as np
@@ -24,7 +24,7 @@ class MoveOn3dGrid(Action):
         self.z = z
 
 
-class GridStateTransitionFunction(StateTransitionFunction):
+class ForwardGridStateTransitionFunction(ForwardStateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: MoveOn3dGrid,
                        state_space: DiscreteStateSpace) -> DiscreteState:      
         next_state_idx = (current_state.index[0] + action.x,
@@ -119,7 +119,7 @@ def build_problem():
     state_space = build_state_space()
     problem = Grid3dSearchProblem(state_space=state_space,
                                   goal_space=build_goal_space(),
-                                  transition_function=GridStateTransitionFunction(),
+                                  transition_function=ForwardGridStateTransitionFunction(),
                                   initial_state = state_space.space[INITIAL_STATE_IDX]
                                   )
     return state_space, problem
