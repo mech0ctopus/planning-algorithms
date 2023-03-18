@@ -59,10 +59,9 @@ class SearchAlgorithm(metaclass=ABCMeta):
     X_G: self.goal_space
     x: self.current_state
     """
-    def __init__(self, problem: SearchProblem, priority_queue_type: PriorityQueue, verbose: bool) -> None:
+    def __init__(self, problem: SearchProblem, priority_queue_type: PriorityQueue) -> None:
         self.problem = problem
         self.priority_queue = priority_queue_type()
-        self.verbose = verbose
         self.current_state = None
         self.plan = [] # list of state indices
 
@@ -70,8 +69,9 @@ class SearchAlgorithm(metaclass=ABCMeta):
     def search(self) -> SearchResult:
         raise NotImplementedError
 
+    @abstractmethod
     def has_succeeded(self) -> bool:
-        return self.problem.goal_space.contains(self.current_state)
+        raise NotImplementedError
 
     def get_current_actions(self) -> List[Action]:
         return self.problem.get_actions(self.current_state)

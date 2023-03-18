@@ -16,8 +16,6 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
         while not self.priority_queue.is_empty():
             #### 2. Select Vertex
             self.current_state = self.priority_queue.get()
-            if self.verbose:
-                print(f"Current State: {self.current_state}")
 
             #### 5. Check for solution
             if self.has_succeeded():
@@ -40,32 +38,77 @@ class ForwardSearchAlgorithm(SearchAlgorithm):
 
         return SearchResult.FAILURE
 
+    def has_succeeded(self) -> bool:
+        return self.problem.goal_space.contains(self.current_state)
+
+
+class BackwardSearchAlgorithm(SearchAlgorithm):
+    """
+    Algorithm described in Figure 2.6 of Planning Algorithms by LaValle.
+    """
+    def search(self) -> SearchResult:
+        #### 1. Initialization
+        for goal_state in self.problem.goal_space:
+            self.priority_queue.add(goal_state)
+            goal_state.mark_visited()
+
+        while not self.priority_queue.is_empty():
+            #### 2. Select Vertex
+            next_state = self.priority_queue.get()
+
+            #### 5. Check for solution
+            if self.has_succeeded():
+                return SearchResult.SUCCESS
+
+        ## TODO: Resume Implementation here. Line 6 of Fig. 2.6
+
+        #     #### 3. Apply an action
+        #     for action in self.get_current_actions():
+        #         next_state = self.get_next_state(action)
+        #         next_state.set_parent(self.current_state)
+        #         # TODO: Store action taken from current_state -> next_state
+        #         #       so that we can return it with our plan later on.
+        #         # TODO: Calculate cost for taken this action.
+
+        #         #### 4. Insert a Directed Edge into the Graph
+        #         if not next_state.is_visited():
+        #             next_state.mark_visited()
+        #             self.priority_queue.add(next_state)
+        #         else:
+        #             self.resolve_duplicate(next_state)
+
+        # return SearchResult.FAILURE
+
+    def has_succeeded(self) -> bool:
+        return self.current_state == self.problem.initial_state
+
+
 class BreadthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
-    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
+    def __init__(self, problem: SearchProblem) -> None:
         # Specify FIFO for all BreadthFirst
         priority_queue_type = FIFO
-        super().__init__(problem, priority_queue_type, verbose)
+        super().__init__(problem, priority_queue_type)
 
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         pass
 
 
 class DepthFirstForwardSearchAlgorithm(ForwardSearchAlgorithm):
-    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
+    def __init__(self, problem: SearchProblem) -> None:
         # Specify LIFO for all DepthFirst
         priority_queue_type = LIFO
-        super().__init__(problem, priority_queue_type, verbose)
+        super().__init__(problem, priority_queue_type)
 
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         pass
 
 
 class DijkstrasForwardSearchAlgorithm(ForwardSearchAlgorithm):
-    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
+    def __init__(self, problem: SearchProblem) -> None:
         raise NotImplementedError
         # TODO: Use a Fibonacci Heap
         priority_queue_type = None
-        super().__init__(problem, priority_queue_type, verbose)
+        super().__init__(problem, priority_queue_type)
 
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         # TODO: See bottom of P.36-37
@@ -74,10 +117,10 @@ class DijkstrasForwardSearchAlgorithm(ForwardSearchAlgorithm):
 
 class AStarForwardSearchAlgorithm(ForwardSearchAlgorithm):
     # TODO: Possibly inherit from Dijkstra's. Just change the priority queue.
-    def __init__(self, problem: SearchProblem, verbose: bool = False) -> None:
+    def __init__(self, problem: SearchProblem) -> None:
         raise NotImplementedError
         priority_queue_type = None
-        super().__init__(problem, priority_queue_type, verbose)
+        super().__init__(problem, priority_queue_type)
 
     def resolve_duplicate(self, next_state: DiscreteState) -> None:
         # TODO: See bottom of P.36-37

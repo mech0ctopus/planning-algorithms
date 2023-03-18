@@ -23,6 +23,7 @@ python grid3d.py
 ```
 
 ### TODO
+- Finish `BackwardSearchAlgorithm` implementation
 - Forward and Backward search should:
     - Either implement an interface
     - OR be passed in as args to a factory
