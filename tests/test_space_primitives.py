@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import Mock
 
 from planning.space.primitives import DiscreteState, DiscreteStateSpace, DiscreteStateStatus
 
@@ -31,12 +30,12 @@ class TestDiscreteState(unittest.TestCase):
         self.assertTrue(self.state.is_visited())
 
     def test_set_parent(self):
-        parent = Mock(spec=DiscreteState)
+        parent = DiscreteState(index=1)
         self.state.set_parent(parent)
         self.assertEqual(self.state.parent, parent)
 
     def test_get_parent(self):
-        parent = Mock(spec=DiscreteState)
+        parent = DiscreteState(index=1)
         self.state.set_parent(parent)
         self.assertEqual(self.state.get_parent(), parent)
 
