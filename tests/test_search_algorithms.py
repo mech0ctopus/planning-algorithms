@@ -1,7 +1,7 @@
 import unittest
 
 from planning.search.backward import *
-from planning.search.bidrectional import *
+from planning.search.bidirectional import *
 from planning.search.forward import *
 
 from planning.problems import grid2d_problem, grid3d_problem
