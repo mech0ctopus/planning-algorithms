@@ -60,27 +60,21 @@ class SearchAlgorithm(metaclass=ABCMeta):
     Abstract Discrete Feasible Planning `SearchAlgorithm`.
 
     Notation:
-    X: self.state_space
-    U: self.action_space
-    Q: self.priority_queue
-    x': next_state
-    f(x,u): self.transition_function
-    x_I: self.initial_state
-    X_G: self.goal_space
-    x: self.current_state
+        X: self.state_space
+        U: self.action_space
+        x': next_state
+        f(x,u): self.transition_function
+        x_I: self.initial_state
+        X_G: self.goal_space
+        x: self.current_state
     """
-    def __init__(self, problem: SearchProblem, priority_queue_type: PriorityQueue) -> None:
+    def __init__(self, problem: SearchProblem) -> None:
         self.problem = problem
-        self.priority_queue = priority_queue_type()
         self.current_state = None
         self.plan = [] # list of state indices
 
     @abstractmethod
     def search(self) -> bool:
-        raise NotImplementedError
-
-    @abstractmethod
-    def has_succeeded(self) -> bool:
         raise NotImplementedError
 
     def get_current_actions(self) -> List[Action]:
@@ -107,4 +101,17 @@ class SearchAlgorithm(metaclass=ABCMeta):
 
     @abstractmethod
     def resolve_duplicate(self, state: DiscreteState) -> None:
+        raise NotImplementedError
+
+class UnidirectionalSearchAlgorithm(SearchAlgorithm):
+    """
+    Notation:
+        Q: self.priority_queue
+    """
+    def __init__(self, problem: SearchProblem, priority_queue_type: PriorityQueue) -> None:
+        self.priority_queue = priority_queue_type()
+        super().__init__(problem)
+
+    @abstractmethod
+    def has_succeeded(self) -> bool:
         raise NotImplementedError

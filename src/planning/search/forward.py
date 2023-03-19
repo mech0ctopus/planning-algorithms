@@ -1,11 +1,11 @@
-from planning.search.abstract import SearchAlgorithm, SearchProblem
+from planning.search.abstract import SearchProblem, UnidirectionalSearchAlgorithm
 from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState
 
 from typing import List
 
 
-class ForwardSearchAlgorithm(SearchAlgorithm):
+class ForwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
     """
     Algorithm described in Figure 2.4 of Planning Algorithms by LaValle.
     """

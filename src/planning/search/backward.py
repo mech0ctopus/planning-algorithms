@@ -1,11 +1,11 @@
-from planning.search.abstract import SearchAlgorithm, SearchProblem
+from planning.search.abstract import SearchProblem, UnidirectionalSearchAlgorithm
 from planning.search.queue import FIFO, LIFO
 from planning.space.primitives import DiscreteState
 
 from typing import List
 
 
-class BackwardSearchAlgorithm(SearchAlgorithm):
+class BackwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
     """
     Algorithm described in Figure 2.6 of Planning Algorithms by LaValle.
     """
