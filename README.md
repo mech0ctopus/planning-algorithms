@@ -23,7 +23,8 @@ python grid3d.py
 ```
 
 ### TODO
-- Implement bi-directional search
+- Finish implementing bidirectional search
+- Don't skip bidirectional tests
 
 ### TODO Later
 - Define a better `SearchProblem` interface
