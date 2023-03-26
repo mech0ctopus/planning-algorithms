@@ -39,6 +39,8 @@ class DiscreteState:
         return self.status != DiscreteStateStatus.UNVISITED
 
     def set_parent(self, parent) -> None:
+        if self.parent is not None:
+            raise ValueError(f"Parent is being overwritten! {self}")
         self.parent = DiscreteState.copy(parent)
 
     def get_parent(self) -> None:
