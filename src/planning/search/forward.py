@@ -25,12 +25,12 @@ class ForwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
             #### 3. Apply an action
             for action in self.get_current_actions():
                 next_state = self.get_next_state(action)
+                #### 4. Insert a Directed Edge into the Graph
                 next_state.set_parent(self.current_state)
                 # TODO: Store action taken from current_state -> next_state
                 #       so that we can return it with our plan later on.
                 # TODO: Calculate cost for taken this action.
 
-                #### 4. Insert a Directed Edge into the Graph
                 if not next_state.is_visited():
                     next_state.mark_visited()
                     self.priority_queue.add(next_state)

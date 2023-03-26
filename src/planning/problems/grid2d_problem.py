@@ -10,8 +10,8 @@ from typing import List
 # TODO: Cleanup / Refactor this into a class.
 XMAX = 15
 YMAX = 15
-INITIAL_STATE_IDX = (1,2)
-GOAL_STATE_IDX = (8,5)
+INITIAL_STATE_IDX = (6,2)
+GOAL_STATE_IDX = (12,12)
 
 
 class MoveOn2dGrid(Action):
