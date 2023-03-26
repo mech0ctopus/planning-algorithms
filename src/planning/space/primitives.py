@@ -38,8 +38,8 @@ class DiscreteState:
     def is_visited(self) -> bool:
         return self.status != DiscreteStateStatus.UNVISITED
 
-    def set_parent(self, parent) -> None:
-        if self.parent is not None:
+    def set_parent(self, parent, raise_exception=False) -> None:
+        if raise_exception and self.parent is not None:
             raise ValueError(f"Parent is being overwritten! {self}")
         self.parent = DiscreteState.copy(parent)
 
@@ -74,3 +74,12 @@ class DiscreteStateSpace:
 
     def contains(self, state_to_check: DiscreteState) -> bool:
         return state_to_check.index in self.space.keys()
+
+    def has_visited(self, state: DiscreteState) -> bool:
+        return self.get_state(state).is_visited()
+
+    def get_state(self, state: DiscreteState) -> DiscreteState:
+        return self.space[state.index]
+
+    def mark_visited(self, state: DiscreteState) -> None:
+        self.get_state(state).mark_visited()

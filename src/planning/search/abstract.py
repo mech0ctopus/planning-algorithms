@@ -103,6 +103,10 @@ class SearchAlgorithm(metaclass=ABCMeta):
     def resolve_duplicate(self, state: DiscreteState) -> None:
         raise NotImplementedError
 
+    def has_visited(self, state: DiscreteState) -> bool:
+        return self.problem.state_space.has_visited(state)
+
+
 class UnidirectionalSearchAlgorithm(SearchAlgorithm):
     """
     Notation:

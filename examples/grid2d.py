@@ -4,14 +4,10 @@ from planning.search.bidirectional import *
 from planning.search.forward import *
 
 
-# INITIAL_STATE_IDX = (1,2)
-# GOAL_STATE_IDX = (8,5)
-
 if __name__ == '__main__':
     # Define search problem
     state_space, problem = build_problem()
     # Solve search problem
-    # solver = BreadthFirstBackwardSearchAlgorithm(problem)
     solver = BreadthFirstBidirectionalSearchAlgorithm(problem)
     success = solver.search()
     print(f"Success: {success}")
