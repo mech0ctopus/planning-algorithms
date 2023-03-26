@@ -39,6 +39,7 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
                 self.forward_search.current_state = self.forward_search.priority_queue.get()
                 #### 5. Check for solution
                 if self.backward_search.has_visited(self.forward_search.current_state):
+                    self.intersection_state = next_backward_state
                     return True
                 #### 3. Apply an action
                 for action in self.forward_search.get_current_actions():
@@ -58,6 +59,7 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
                 next_backward_state = self.backward_search.priority_queue.get()
                 #### 5. Check for solution
                 if self.forward_search.has_visited(next_backward_state):
+                    self.intersection_state = next_backward_state
                     return True
                 #### 3. Apply an action
                 for action in self.backward_search.get_previous_actions(next_backward_state):
@@ -75,7 +77,31 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         return False
 
     def get_plan(self) -> List[DiscreteState]:
-        return self.forward_search.get_plan() + self.backward_search.get_plan()
+        plan = []
+        method = 0
+
+        print(f"Intersection: {self.intersection_state}")
+
+        if method == 0:
+            plan = self.forward_search.get_plan() + self.backward_search.get_plan()
+        else:
+            planning_state = self.forward_search.problem.state_space.get_state(self.intersection_state)
+            print("Forward")
+            while (parent := planning_state.get_parent()) is not None:
+                print(planning_state)
+                plan.append(planning_state)
+                planning_state = parent
+
+            print("Backward")
+            planning_state = self.backward_search.problem.state_space.get_state(self.intersection_state)
+            while (parent := planning_state.get_parent()) not in self.problem.goal_space:
+                print(planning_state)
+                plan.append(planning_state)
+                planning_state = parent
+            print(planning_state)
+            plan.append(planning_state)
+
+        return plan
 
 
 class BreadthFirstBidirectionalSearchAlgorithm(BidirectionalSearchAlgorithm):

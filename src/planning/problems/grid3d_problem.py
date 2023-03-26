@@ -14,7 +14,7 @@ XMAX = 15
 YMAX = 15
 ZMAX = 15
 INITIAL_STATE_IDX = (1,2,3)
-GOAL_STATE_IDX = (8,5,10)
+GOAL_STATE_IDX = (12,13,10)
 
 
 class MoveOn3dGrid(Action):

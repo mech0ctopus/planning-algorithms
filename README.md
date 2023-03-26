@@ -23,11 +23,14 @@ python grid3d.py
 ```
 
 ### TODO
-- Resolve why bidirectional planner is failing for 3D problem
+- Resolve why some bidirectional plans are incorrect:
+  - 2D: (6,2) to (12,6)
+  - Seems related to `get_plan`, not `search`
 
 ### TODO Later
 - Define a better `SearchProblem` interface
 - Integrate "Cost" calculations.
+- In tests, try 5X different start / end states for each problem
 
 ### Maybe Later
 - Identify a better design pattern to use for constructing Forward/Backward versions
