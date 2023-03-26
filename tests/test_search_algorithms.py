@@ -66,7 +66,6 @@ class TestBidirectionalSearchAlgorithms(SearchAlgorithmsTestBase):
                            "DepthFirst": DepthFirstBidirectionalSearchAlgorithm,
                            }
 
-    @unittest.skip(reason="Bidirectional search doesn't work yet.")
     def test_bidirectional_search(self):
         self.assert_all_algorithms_solve_all_problems()
 

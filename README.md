@@ -23,11 +23,7 @@ python grid3d.py
 ```
 
 ### TODO
-- Finish implementing bidirectional search
-  - Resolve how to produce full plan in `bidirectional.py`
-    - Need to calculate/store both the forward half of the plan and the backward half of the plan.
-  - There is some issue/inconvenience with the shared "state space" data structure between the two search branches
-- Don't skip bidirectional tests
+- Resolve why bidirectional planner is failing for 3D problem
 
 ### TODO Later
 - Define a better `SearchProblem` interface
