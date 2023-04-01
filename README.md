@@ -19,6 +19,10 @@ pip3 install -e .
 
 ### Tests
 ```bash
+## Run all tests
+cd planning-algorithms
+./run_tests.sh
+
 ## C++
 cd planning-algorithms/modules/cpp/build
 ./TestPrimitives
