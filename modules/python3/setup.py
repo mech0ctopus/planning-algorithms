@@ -12,7 +12,7 @@ setup(
     author="Craig Miller",
     author_email="craigdanielmiller@gmail.com",
     description="Experimental implementations of Planning Algorithms by Steven LaValle.",
-    long_description=open("README.md", "r").read(),
+    long_description=open("../../README.md", "r").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/mech0ctopus/planning-algorithms",
     classifiers=[

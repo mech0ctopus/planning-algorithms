@@ -4,20 +4,20 @@ Experimental implementations of Planning Algorithms by Steven LaValle.
 ### Installation
 ```bash
 git clone git@github.com:mech0ctopus/planning-algorithms.git
-cd planning-algorithms
+cd planning-algorithms/modules/python3
 # Install in editable mode
 pip3 install -e .
 ```
 
 ### Tests
 ```bash
-cd planning-algorithms
+cd planning-algorithms/modules/python3
 nosetests3 .
 ```
 
 ### Examples
 ```bash
-cd planning-algorithms/examples
+cd planning-algorithms/modules/python3/examples
 python grid2d.py
 python grid3d.py
 ```
