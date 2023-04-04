@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "optimization/Cost.h"
-#include "primitives/GeometryTypes.h"
+#include "primitives/Geometry.h"
 
 
 // This is just for testing. It returns the same state as before
