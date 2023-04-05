@@ -35,8 +35,12 @@ class StateTransitionGraph {
   void print_vertices() const {
     std::cout << "Vertices:" << std::endl;
     for (const auto& vertex : boost::make_iterator_range(boost::vertices(graph_))) {
-      std::cout << graph_[vertex].name << " (value " << graph_[vertex].value << ")" << std::endl;
+      print_vertex(vertex);
     }
+  }
+
+  void print_vertex(const VertexDescriptor<TState>& vertex) const {
+    std::cout << graph_[vertex].name << " (value " << graph_[vertex].value << ")" << std::endl;
   }
 
   void print_edges() const {
@@ -49,6 +53,15 @@ class StateTransitionGraph {
     }
   }
 
+
  private:
   WeightedDirectedGraph<TState> graph_;
+};
+
+
+template<typename TState, typename TVertex>
+struct PlanningProblem{
+    StateTransitionGraph<TState> graph;
+    TVertex initial_state;
+    TVertex goal_state;
 };
