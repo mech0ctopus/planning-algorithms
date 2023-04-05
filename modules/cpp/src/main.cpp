@@ -2,15 +2,25 @@
 
 #include "primitives/Graph.h"
 
+using StateType=VertexValue<std::string>;
+using VertexType=VertexDescriptor<StateType>;
+
 int main(int,char*[])
 {
-    // TODO: Consider using `directed_graph` vs. `adjacency_list`
-    DirectedGraph g;
-    VertexDescriptor v0 = g.add_vertex();
-    VertexDescriptor v1 = g.add_vertex();
-    g.add_edge(v0, v1);
+    StateTransitionGraph<StateType> graph;
 
-    write_graphviz(std::cout, g);
+    // Add vertices with values
+    VertexType v1 = graph.add_vertex(StateType {"v1"});
+    VertexType v2 = graph.add_vertex(StateType {"v2"});
+    VertexType v3 = graph.add_vertex(StateType {"v3"});
+
+    // Add edges with weights
+    graph.add_edge(v1, v2, 1.0);
+    graph.add_edge(v2, v3, 2.0);
+
+    // Print vertices and edges
+    graph.print_vertices();
+    graph.print_edges();
 
     return 0;
 }
