@@ -11,7 +11,9 @@ include_directories(${GTEST_INCLUDE_DIRS}
                     include
                     )
 
-add_executable(planning src/main.cpp)
+
+add_executable(FiveStateGraph src/five_state_graph.cpp)
+add_executable(SimpleGraph src/simple_graph.cpp)
 add_executable(TestPrimitives tests/test_primitives.cpp)
 
 target_link_libraries(TestPrimitives
