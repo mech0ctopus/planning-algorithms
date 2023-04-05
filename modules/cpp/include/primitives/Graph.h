@@ -7,7 +7,8 @@ struct EdgeWeight{
 };
 
 template<typename TState>
-struct VertexValue {
+struct VertexContents {
+  std::string name;
   TState value;
 };
 
@@ -34,7 +35,7 @@ class StateTransitionGraph {
   void print_vertices() const {
     std::cout << "Vertices:" << std::endl;
     for (const auto& vertex : boost::make_iterator_range(boost::vertices(graph_))) {
-      std::cout << vertex << " (value " << graph_[vertex].value << ")" << std::endl;
+      std::cout << graph_[vertex].name << " (value " << graph_[vertex].value << ")" << std::endl;
     }
   }
 
@@ -43,7 +44,7 @@ class StateTransitionGraph {
     for (const auto& vertex : boost::make_iterator_range(boost::vertices(graph_))) {
       for (const auto& edge : boost::make_iterator_range(boost::out_edges(vertex, graph_))) {
         VertexDescriptor<TState> target = boost::target(edge, graph_);
-        std::cout << vertex << " -> " << target << " (weight " << graph_[edge].weight << ")" << std::endl;
+        std::cout << graph_[vertex].name << " -> " << graph_[target].name << " (weight " << graph_[edge].weight << ")" << std::endl;
       }
     }
   }
