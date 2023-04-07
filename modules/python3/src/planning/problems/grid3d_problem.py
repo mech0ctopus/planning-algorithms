@@ -13,8 +13,6 @@ from typing import List
 XMAX = 15
 YMAX = 15
 ZMAX = 15
-INITIAL_STATE_IDX = (1,2,3)
-GOAL_STATE_IDX = (12,13,10)
 
 
 class MoveOn3dGrid(Action):
@@ -105,14 +103,14 @@ def build_state_space():
     return state_space
 
 
-def build_goal_space():
+def build_goal_space(goal_state_index):
     goal_space = DiscreteStateSpace()
-    goal_state = DiscreteState(index=GOAL_STATE_IDX)
+    goal_state = DiscreteState(index=goal_state_index)
     goal_space.add_state(goal_state)
     return goal_space
 
 
-def plot_results(state_space, plan):
+def plot_results(state_space, plan, initial_state_index, goal_state_index):
     grid = np.zeros((XMAX, YMAX, ZMAX))
     colors = np.zeros((XMAX, YMAX, ZMAX, 4), dtype=np.float32)
 
@@ -136,11 +134,11 @@ def plot_results(state_space, plan):
         colors[state.index[0]][state.index[1]][state.index[2]] = plan_color
 
     # INITIAL
-    grid[INITIAL_STATE_IDX[0]][INITIAL_STATE_IDX[1]][INITIAL_STATE_IDX[2]] = -1
-    colors[INITIAL_STATE_IDX[0]][INITIAL_STATE_IDX[1]][INITIAL_STATE_IDX[2]] = initial_color
+    grid[initial_state_index[0]][initial_state_index[1]][initial_state_index[2]] = -1
+    colors[initial_state_index[0]][initial_state_index[1]][initial_state_index[2]] = initial_color
     # GOAL
-    grid[GOAL_STATE_IDX[0]][GOAL_STATE_IDX[1]][GOAL_STATE_IDX[2]] = 2
-    colors[GOAL_STATE_IDX[0]][GOAL_STATE_IDX[1]][GOAL_STATE_IDX[2]] = goal_color
+    grid[goal_state_index[0]][goal_state_index[1]][goal_state_index[2]] = 2
+    colors[goal_state_index[0]][goal_state_index[1]][goal_state_index[2]] = goal_color
 
     ax = plt.figure().add_subplot(projection='3d')
     ax.voxels(grid, facecolors=colors, edgecolor='k')
@@ -149,11 +147,11 @@ def plot_results(state_space, plan):
     plt.ylabel("y")
     plt.savefig("grid3d.png")
 
-def build_problem():
+def build_problem(initial_state_index, goal_state_index):
     state_space = build_state_space()
     problem = Grid3dSearchProblem(state_space=state_space,
-                                  goal_space=build_goal_space(),
+                                  goal_space=build_goal_space(goal_state_index),
                                   transition_function=GridStateTransitionFunction(),
-                                  initial_state = state_space.space[INITIAL_STATE_IDX]
+                                  initial_state = state_space.space[initial_state_index]
                                   )
     return state_space, problem
