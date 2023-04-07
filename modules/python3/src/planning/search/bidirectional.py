@@ -1,7 +1,7 @@
 from planning.search.abstract import SearchAlgorithm, SearchProblem
 from planning.search.backward import *
 from planning.search.forward import *
-from planning.space.primitives import DiscreteState
+from planning.space.primitives import DiscreteState, DiscreteStateStatus
 
 from copy import deepcopy
 from enum import Enum
@@ -30,13 +30,10 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         #### 1. Initialization
         self.forward_search.priority_queue.add(self.forward_search.problem.initial_state)
         self.forward_search.problem.state_space.mark_visited(self.forward_search.problem.initial_state)
-        self.first_goal_state = None
 
         for goal_state in self.backward_search.problem.goal_space:
             self.backward_search.priority_queue.add(goal_state)
             self.backward_search.problem.state_space.mark_visited(goal_state)
-            if self.first_goal_state is None:
-                self.first_goal_state = self.backward_search.problem.state_space.get_state(goal_state)
 
         while (not self.forward_search.priority_queue.is_empty()
                and not self.backward_search.priority_queue.is_empty()):
@@ -46,7 +43,7 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
                 self.forward_search.current_state = self.forward_search.priority_queue.get()
                 #### 5. Check for solution
                 if self.backward_search.has_visited(self.forward_search.current_state):
-                    self.intersection_state = next_backward_state
+                    self.intersection_state = self.forward_search.current_state
                     self.return_loop = Direction.FORWARD
                     print("Returning from Forward Loop")
                     return True
@@ -94,34 +91,30 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         print(f"Intersection: {self.intersection_state}")
         print(f"Goal: {self.problem.goal_space}")
 
-        # If return from forward loop, use self.forward_search.get_plan()
         if self.return_loop == Direction.FORWARD:
             forward_plan = self.forward_search.get_plan()
-            backward_plan = self.backward_search.get_plan()
         elif self.return_loop == Direction.BACKWARD:
             planning_state = self.forward_search.problem.state_space.get_state(self.intersection_state)
             while (parent := planning_state.get_parent()) is not None:
                 forward_plan.append(planning_state)
                 planning_state = parent
+            forward_plan.append(self.problem.initial_state)
             forward_plan = list(reversed(forward_plan))
-
-            planning_state = self.backward_search.problem.state_space.get_state(self.intersection_state)
-            while (parent := planning_state.get_parent()) not in self.problem.goal_space:
-                print(planning_state)
-                backward_plan.append(planning_state)
-                planning_state = parent
-            print(planning_state)
-            backward_plan.append(planning_state)
         else:
-            raise Exception("Search failed (or was not called before `get_plan`.")
+            raise Exception("Search failed (or was not called before `get_plan`).")
 
-        print("Forward")
-        [print(planning_state) for planning_state in forward_plan]
-        print("Backward")
-        [print(planning_state) for planning_state in backward_plan]
- 
-        return forward_plan + backward_plan
+        return forward_plan + self.build_backward_plan_segment()
 
+    def build_backward_plan_segment(self) -> List[DiscreteState]:
+        backward_plan = []
+        planning_state = self.backward_search.problem.state_space.get_state(self.intersection_state)
+        while (parent := planning_state.get_parent()) not in self.problem.goal_space:
+            backward_plan.append(planning_state)
+            planning_state = parent
+        backward_plan.append(planning_state)
+        planning_state = parent
+        backward_plan.append(planning_state)
+        return backward_plan
 
 class BreadthFirstBidirectionalSearchAlgorithm(BidirectionalSearchAlgorithm):
     def __init__(self, problem: SearchProblem) -> None:

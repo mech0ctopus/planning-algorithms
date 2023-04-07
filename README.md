@@ -40,9 +40,6 @@ python grid3d.py
 ```
 
 ### TODO
-- Resolve why some bidirectional plans are incorrect:
-  - 2D: (6,2) to (12,6)
-  - Seems related to `get_plan`, not `search`
 
 ### TODO Later
 - Define a better `SearchProblem` interface
