@@ -10,8 +10,6 @@ from typing import List
 # TODO: Cleanup / Refactor this into a class.
 XMAX = 15
 YMAX = 15
-INITIAL_STATE_IDX = (6,2)
-GOAL_STATE_IDX = (12,12)
 
 
 class MoveOn2dGrid(Action):
@@ -85,9 +83,9 @@ def build_state_space():
             state_space.add_state(state)   
     return state_space
 
-def build_goal_space():
+def build_goal_space(goal_state_index):
     goal_space = DiscreteStateSpace()
-    goal_state = DiscreteState(index=GOAL_STATE_IDX)
+    goal_state = DiscreteState(index=goal_state_index)
     goal_space.add_state(goal_state)
     return goal_space
 
@@ -98,24 +96,24 @@ def build_xy_grid(state_space):
             grid[x, y] = state_space.space[(x,y)].is_visited()
     return grid
 
-def build_problem():
+def build_problem(initial_state_index, goal_state_index):
     # Define search problem
     state_space = build_state_space()
     problem = Grid2dSearchProblem(state_space=state_space,
-                                  goal_space=build_goal_space(),
+                                  goal_space=build_goal_space(goal_state_index),
                                   transition_function=GridStateTransitionFunction(),
-                                  initial_state=state_space.space[INITIAL_STATE_IDX]
+                                  initial_state=state_space.space[initial_state_index]
                                   )
     return state_space, problem
 
-def plot_results(state_space, plan):
-    grid = build_xy_grid(state_space)
+def plot_results(problem, plan, initial_state_index, goal_state_index):
+    grid = build_xy_grid(problem.state_space)
 
     for state in plan:
         grid[state.index[0]][state.index[1]] = 3
 
-    grid[INITIAL_STATE_IDX[0]][INITIAL_STATE_IDX[1]] = -1
-    grid[GOAL_STATE_IDX[0]][GOAL_STATE_IDX[1]] = 2
+    grid[initial_state_index[0]][initial_state_index[1]] = -1
+    grid[goal_state_index[0]][goal_state_index[1]] = 2
 
     plt.imshow(grid.T, origin="lower")
     plt.xlabel("x")

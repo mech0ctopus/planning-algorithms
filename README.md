@@ -40,17 +40,19 @@ python grid3d.py
 ```
 
 ### TODO
+- Integrate "Cost" calculations.
+- Begin optimal planning work
 
 ### TODO Later
 - Define a better `SearchProblem` interface
-- Integrate "Cost" calculations.
-- In tests, try 5X different start / end states for each problem
+- Try 5X different start / end states for 3D Grid problem
+- Mark Initial/Goal States as VISITED in bidirectional search
 
 ### Maybe Later
+- Create/Implement more examples
 - Identify a better design pattern to use for constructing Forward/Backward versions
   of the same search algo. (Factory?)
     - Should Forward, Backward, and Bidirectional search be consolidated into a Unified interface?
-- Create/Implement more examples
 - Implement:
     - Dijkstra's
     - A-Star

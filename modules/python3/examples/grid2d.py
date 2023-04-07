@@ -5,8 +5,10 @@ from planning.search.forward import *
 
 
 if __name__ == '__main__':
+    initial_state_index = (6,2)
+    goal_state_index = (12,12)
     # Define search problem
-    state_space, problem = build_problem()
+    state_space, problem = build_problem(initial_state_index, goal_state_index)
     # Solve search problem
     solver = BreadthFirstBidirectionalSearchAlgorithm(problem)
     success = solver.search()
@@ -17,4 +19,4 @@ if __name__ == '__main__':
     print("Plan:")
     for state in plan:
         print(state)
-    plot_results(state_space, plan)
+    plot_results(problem, plan, initial_state_index, goal_state_index)
