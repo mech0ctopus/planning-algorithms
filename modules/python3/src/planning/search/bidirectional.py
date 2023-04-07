@@ -4,8 +4,14 @@ from planning.search.forward import *
 from planning.space.primitives import DiscreteState
 
 from copy import deepcopy
+from enum import Enum
 from typing import List
 
+
+class Direction(Enum):
+    FORWARD = "FORWARD"
+    BACKWARD = "BACKWARD"
+    NONE = "NONE"
 
 class BidirectionalSearchAlgorithm(SearchAlgorithm):
     """
@@ -17,6 +23,7 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         # for marking states as "VISITED", etc.
         self.forward_search = forward_search_type(problem=deepcopy(problem))
         self.backward_search = backward_search_type(problem=deepcopy(problem))
+        self.return_loop = Direction.NONE
         super().__init__(problem)
 
     def search(self) -> bool:
@@ -40,6 +47,8 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
                 #### 5. Check for solution
                 if self.backward_search.has_visited(self.forward_search.current_state):
                     self.intersection_state = next_backward_state
+                    self.return_loop = Direction.FORWARD
+                    print("Returning from Forward Loop")
                     return True
                 #### 3. Apply an action
                 for action in self.forward_search.get_current_actions():
@@ -60,6 +69,8 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
                 #### 5. Check for solution
                 if self.forward_search.has_visited(next_backward_state):
                     self.intersection_state = next_backward_state
+                    print("Returning from Backward Loop")
+                    self.return_loop = Direction.BACKWARD
                     return True
                 #### 3. Apply an action
                 for action in self.backward_search.get_previous_actions(next_backward_state):
@@ -77,31 +88,39 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         return False
 
     def get_plan(self) -> List[DiscreteState]:
-        plan = []
-        method = 0
+        forward_plan, backward_plan = [], []
 
+        print(f"Initial: {self.problem.initial_state}")
         print(f"Intersection: {self.intersection_state}")
+        print(f"Goal: {self.problem.goal_space}")
 
-        if method == 0:
-            plan = self.forward_search.get_plan() + self.backward_search.get_plan()
-        else:
+        # If return from forward loop, use self.forward_search.get_plan()
+        if self.return_loop == Direction.FORWARD:
+            forward_plan = self.forward_search.get_plan()
+            backward_plan = self.backward_search.get_plan()
+        elif self.return_loop == Direction.BACKWARD:
             planning_state = self.forward_search.problem.state_space.get_state(self.intersection_state)
-            print("Forward")
             while (parent := planning_state.get_parent()) is not None:
-                print(planning_state)
-                plan.append(planning_state)
+                forward_plan.append(planning_state)
                 planning_state = parent
+            forward_plan = list(reversed(forward_plan))
 
-            print("Backward")
             planning_state = self.backward_search.problem.state_space.get_state(self.intersection_state)
             while (parent := planning_state.get_parent()) not in self.problem.goal_space:
                 print(planning_state)
-                plan.append(planning_state)
+                backward_plan.append(planning_state)
                 planning_state = parent
             print(planning_state)
-            plan.append(planning_state)
+            backward_plan.append(planning_state)
+        else:
+            raise Exception("Search failed (or was not called before `get_plan`.")
 
-        return plan
+        print("Forward")
+        [print(planning_state) for planning_state in forward_plan]
+        print("Backward")
+        [print(planning_state) for planning_state in backward_plan]
+ 
+        return forward_plan + backward_plan
 
 
 class BreadthFirstBidirectionalSearchAlgorithm(BidirectionalSearchAlgorithm):
