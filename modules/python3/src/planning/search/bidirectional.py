@@ -45,7 +45,6 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
                 if self.backward_search.has_visited(self.forward_search.current_state):
                     self.intersection_state = self.forward_search.current_state
                     self.return_loop = Direction.FORWARD
-                    print("Returning from Forward Loop")
                     return True
                 #### 3. Apply an action
                 for action in self.forward_search.get_current_actions():
@@ -66,7 +65,6 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
                 #### 5. Check for solution
                 if self.forward_search.has_visited(next_backward_state):
                     self.intersection_state = next_backward_state
-                    print("Returning from Backward Loop")
                     self.return_loop = Direction.BACKWARD
                     return True
                 #### 3. Apply an action
@@ -85,12 +83,14 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         return False
 
     def get_plan(self) -> List[DiscreteState]:
-        forward_plan, backward_plan = [], []
-
         print(f"Initial: {self.problem.initial_state}")
         print(f"Intersection: {self.intersection_state}")
         print(f"Goal: {self.problem.goal_space}")
 
+        return self.build_forward_plan_segment() + self.build_backward_plan_segment()
+
+    def build_forward_plan_segment(self) -> List[DiscreteState]:
+        forward_plan = []
         if self.return_loop == Direction.FORWARD:
             forward_plan = self.forward_search.get_plan()
         elif self.return_loop == Direction.BACKWARD:
@@ -102,8 +102,7 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
             forward_plan = list(reversed(forward_plan))
         else:
             raise Exception("Search failed (or was not called before `get_plan`).")
-
-        return forward_plan + self.build_backward_plan_segment()
+        return forward_plan
 
     def build_backward_plan_segment(self) -> List[DiscreteState]:
         backward_plan = []
