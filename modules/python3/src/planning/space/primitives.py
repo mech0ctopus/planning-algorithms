@@ -20,7 +20,11 @@ class DiscreteState:
         self.status = status
 
     def __repr__(self) -> str:
-        return f"index={self.index}. status={self.status}"
+        if self.parent is not None:
+            parent_s =  f" <- parent_id: {self.parent.index}"
+        else:
+            parent_s = ""
+        return f"index={self.index}. status={self.status}" + parent_s
 
     def __eq__(self, other_state) -> bool:
         return self.index == other_state

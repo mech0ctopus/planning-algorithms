@@ -40,20 +40,20 @@ python grid3d.py
 ```
 
 ### TODO
-- Resolve why some bidirectional plans are incorrect:
-  - 2D: (6,2) to (12,6)
-  - Seems related to `get_plan`, not `search`
+- Define a better `SearchProblem` interface
+- Begin optimal planning work
+  - Integrate "Cost" calculations.
+  - Create Python version of 5-state optimal planning problem 
 
 ### TODO Later
-- Define a better `SearchProblem` interface
-- Integrate "Cost" calculations.
-- In tests, try 5X different start / end states for each problem
+- Add assertions about the plan that is created.
+- Mark Initial/Goal States as VISITED in bidirectional search
 
 ### Maybe Later
+- Create/Implement more examples
 - Identify a better design pattern to use for constructing Forward/Backward versions
   of the same search algo. (Factory?)
     - Should Forward, Backward, and Bidirectional search be consolidated into a Unified interface?
-- Create/Implement more examples
 - Implement:
     - Dijkstra's
     - A-Star
