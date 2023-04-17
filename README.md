@@ -40,12 +40,13 @@ python grid3d.py
 ```
 
 ### TODO
-- Integrate "Cost" calculations.
+- Define a better `SearchProblem` interface
 - Begin optimal planning work
+  - Integrate "Cost" calculations.
+  - Create Python version of 5-state optimal planning problem 
 
 ### TODO Later
-- Define a better `SearchProblem` interface
-- Try 5X different start / end states for 3D Grid problem
+- Add assertions about the plan that is created.
 - Mark Initial/Goal States as VISITED in bidirectional search
 
 ### Maybe Later
