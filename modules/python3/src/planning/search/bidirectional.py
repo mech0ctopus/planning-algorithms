@@ -83,10 +83,6 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         return False
 
     def get_plan(self) -> List[DiscreteState]:
-        print(f"Initial: {self.problem.initial_state}")
-        print(f"Intersection: {self.intersection_state}")
-        print(f"Goal: {self.problem.goal_space}")
-
         return self.build_forward_plan_segment() + self.build_backward_plan_segment()
 
     def build_forward_plan_segment(self) -> List[DiscreteState]:

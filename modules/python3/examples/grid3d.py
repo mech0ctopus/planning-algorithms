@@ -16,7 +16,5 @@ if __name__ == '__main__':
     # Get Plan
     plan = solver.get_plan()
     # Print / Plot results
-    print("Plan:")
-    for state in plan:
-        print(state)
+    solver.print_plan()
     plot_results(state_space, plan, initial_state_index, goal_state_index)

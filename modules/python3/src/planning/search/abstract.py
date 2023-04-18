@@ -99,6 +99,10 @@ class SearchAlgorithm(metaclass=ABCMeta):
         """
         raise NotImplementedError
 
+    def print_plan(self) -> None:
+        print("Plan:")
+        [print(state) for state in self.get_plan()]
+
     @abstractmethod
     def resolve_duplicate(self, state: DiscreteState) -> None:
         raise NotImplementedError
