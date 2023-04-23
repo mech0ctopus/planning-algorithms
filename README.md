@@ -40,6 +40,10 @@ python grid3d.py
 ```
 
 ### TODO
+- `FiveState`
+  - Understand why test is failing.
+  - Understand why state is replicated in bi-directional plan
+
 - Define a better `SearchProblem` interface
 - Begin optimal planning work
   - Integrate "Cost" calculations.
@@ -51,6 +55,7 @@ python grid3d.py
 
 ### Maybe Later
 - Create/Implement more examples
+- Determine a path forward for C++ work
 - Identify a better design pattern to use for constructing Forward/Backward versions
   of the same search algo. (Factory?)
     - Should Forward, Backward, and Bidirectional search be consolidated into a Unified interface?
