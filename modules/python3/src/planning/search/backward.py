@@ -35,6 +35,10 @@ class BackwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
                 else:
                     self.resolve_duplicate(self.current_state)
 
+                #### 5. Check for solution (added to resolve five-state problem failure)
+                if self.has_succeeded():
+                    return True
+
         return False
 
     def has_succeeded(self) -> bool:

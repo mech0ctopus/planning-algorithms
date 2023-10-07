@@ -37,6 +37,10 @@ class ForwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
                 else:
                     self.resolve_duplicate(next_state)
 
+                #### 5. Check for solution (added to mimic backward search)
+                if self.has_succeeded():
+                    return True
+
         return False
 
     def has_succeeded(self) -> bool:
