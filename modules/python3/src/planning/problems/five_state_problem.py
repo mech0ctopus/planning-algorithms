@@ -12,7 +12,7 @@ class AlphabetIndexIncrease(Action):
 
 class FiveLetterStateTransitionFunction(StateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: AlphabetIndexIncrease,
-                       state_space: DiscreteStateSpace) -> DiscreteState:      
+                       state_space: DiscreteStateSpace) -> DiscreteState:
         next_letter_idx = LETTERS.find(current_state.index) + action.index
         return state_space.space[LETTERS[next_letter_idx]]
 
