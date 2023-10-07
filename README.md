@@ -37,21 +37,21 @@ nosetests3 .
 cd planning-algorithms/modules/python3/examples
 python grid2d.py
 python grid3d.py
+python five_state.py
 ```
 
 ### TODO
 - `FiveState`
-  - Understand why test is failing.
   - Understand why state is replicated in bi-directional plan
 
-- Define a better `SearchProblem` interface
-- Begin optimal planning work
-  - Integrate "Cost" calculations.
-  - Create Python version of 5-state optimal planning problem 
 
 ### TODO Later
 - Add assertions about the plan that is created.
 - Mark Initial/Goal States as VISITED in bidirectional search
+- Define a better `SearchProblem` interface
+- Begin optimal planning work
+  - Integrate "Cost" calculations.
+  - Create Python version of 5-state optimal planning problem 
 
 ### Maybe Later
 - Create/Implement more examples
