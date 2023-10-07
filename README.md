@@ -41,17 +41,14 @@ python five_state.py
 ```
 
 ### TODO
-- `FiveState`
-  - Understand why state is replicated in bi-directional plan
-
-
-### TODO Later
-- Add assertions about the plan that is created.
-- Mark Initial/Goal States as VISITED in bidirectional search
-- Define a better `SearchProblem` interface
 - Begin optimal planning work
   - Integrate "Cost" calculations.
   - Create Python version of 5-state optimal planning problem 
+
+
+### TODO Later
+- Mark Initial/Goal States as VISITED in bidirectional search
+- Define a better `SearchProblem` interface
 
 ### Maybe Later
 - Create/Implement more examples

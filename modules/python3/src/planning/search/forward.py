@@ -55,7 +55,8 @@ class ForwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
             planning_state = parent
 
         # Append initial state
-        plan.append(planning_state)
+        if plan[-1] != self.problem.initial_state:
+            plan.append(planning_state)
 
         return list(reversed(plan))
 

@@ -83,7 +83,11 @@ class BidirectionalSearchAlgorithm(SearchAlgorithm):
         return False
 
     def get_plan(self) -> List[DiscreteState]:
-        return self.build_forward_plan_segment() + self.build_backward_plan_segment()
+        """
+        Return plan. Remove last element of forward segment to avoid duplicating the state where
+        the forward and backward segments meet.
+        """
+        return self.build_forward_plan_segment()[:-1] + self.build_backward_plan_segment()
 
     def build_forward_plan_segment(self) -> List[DiscreteState]:
         forward_plan = []

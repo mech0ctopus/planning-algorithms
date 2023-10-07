@@ -1,3 +1,4 @@
+from typing import List
 import unittest
 
 from planning.search.backward import *
@@ -5,7 +6,6 @@ from planning.search.bidirectional import *
 from planning.search.forward import *
 
 from planning.problems import five_state_problem, grid2d_problem, grid3d_problem
-
 
 class SearchAlgorithmsTestBase(unittest.TestCase):
     def get_problems(self) -> None:
@@ -32,7 +32,7 @@ class SearchAlgorithmsTestBase(unittest.TestCase):
 
     def assert_all_algorithms_solve_all_problems(self):
         for name, algorithm in self.algorithms.items():
-          self.assert_algorithm_solves_all_problems(name=name, algorithm=algorithm)  
+          self.assert_algorithm_solves_all_problems(name=name, algorithm=algorithm)
 
     def assert_algorithm_solves_all_problems(self, name, algorithm):
         for _, problem in self.get_problems():
@@ -48,19 +48,30 @@ class SearchAlgorithmsTestBase(unittest.TestCase):
 
         plan = solver.get_plan()
         self.assert_plan_connects_initial_and_goal_states(plan, algorithm_name, problem)
+        self.assert_plan_does_not_repeat_states(plan, algorithm_name, problem)
 
-    def assert_plan_connects_initial_and_goal_states(self, plan, algorithm_name, problem):
+    def assert_plan_connects_initial_and_goal_states(self, plan: List[DiscreteState], algorithm_name, problem):
         self.assertEqual(problem.initial_state, plan[0],
                          f"Plan from {algorithm_name} does not start at the initial state!")
         self.assertTrue(problem.goal_space.contains(plan[-1]),
                         f"Plan from {algorithm_name} does not end in the goal space!")
 
+    def assert_plan_does_not_repeat_states(self, plan: List[DiscreteState], algorithm_name, problem):
+        # Skip assertions for FiveStateSearchProblem since states may repeat
+        if isinstance(problem, five_state_problem.FiveStateSearchProblem):
+            return
+
+        all_state_indices = [state.index for state in plan]
+        print(all_state_indices)
+        for state_idx in set(all_state_indices):
+            self.assertEqual(all_state_indices.count(state_idx), 1,
+                             f"Plan for from {algorithm_name} contains duplicate states!")
 
 class TestForwardSearchAlgorithms(SearchAlgorithmsTestBase):
     def setUp(self) -> None:
         self.algorithms = {
-                           "BreadthFirst": BreadthFirstForwardSearchAlgorithm,
-                           "DepthFirst": DepthFirstForwardSearchAlgorithm,
+                           "BreadthFirstForward": BreadthFirstForwardSearchAlgorithm,
+                           "DepthFirstForward": DepthFirstForwardSearchAlgorithm,
                            }
 
     def test_forward_search(self):
@@ -70,8 +81,8 @@ class TestForwardSearchAlgorithms(SearchAlgorithmsTestBase):
 class TestBackwardSearchAlgorithms(SearchAlgorithmsTestBase):
     def setUp(self) -> None:
         self.algorithms = {
-                           "BreadthFirst": BreadthFirstBackwardSearchAlgorithm,
-                           "DepthFirst": DepthFirstBackwardSearchAlgorithm,
+                           "BreadthFirstBackward": BreadthFirstBackwardSearchAlgorithm,
+                           "DepthFirstBackward": DepthFirstBackwardSearchAlgorithm,
                            }
 
     def test_backward_search(self):
@@ -81,8 +92,8 @@ class TestBackwardSearchAlgorithms(SearchAlgorithmsTestBase):
 class TestBidirectionalSearchAlgorithms(SearchAlgorithmsTestBase):
     def setUp(self) -> None:
         self.algorithms = {
-                           "BreadthFirst": BreadthFirstBidirectionalSearchAlgorithm,
-                           "DepthFirst": DepthFirstBidirectionalSearchAlgorithm,
+                           "BreadthFirstBidirectional": BreadthFirstBidirectionalSearchAlgorithm,
+                           "DepthFirstBidirectional": DepthFirstBidirectionalSearchAlgorithm,
                            }
 
     def test_bidirectional_search(self):
