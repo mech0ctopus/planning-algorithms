@@ -68,10 +68,11 @@ class SearchAlgorithm(metaclass=ABCMeta):
         X_G: self.goal_space
         x: self.current_state
     """
+
     def __init__(self, problem: SearchProblem) -> None:
         self.problem = problem
         self.current_state = None
-        self.plan = [] # list of state indices
+        self.plan = []  # list of state indices
 
     @abstractmethod
     def search(self) -> bool:
@@ -116,6 +117,7 @@ class UnidirectionalSearchAlgorithm(SearchAlgorithm):
     Notation:
         Q: self.priority_queue
     """
+
     def __init__(self, problem: SearchProblem, priority_queue_type: PriorityQueue) -> None:
         self.priority_queue = priority_queue_type()
         super().__init__(problem)

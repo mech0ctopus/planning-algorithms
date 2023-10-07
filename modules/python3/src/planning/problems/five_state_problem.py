@@ -58,6 +58,7 @@ class FiveStateSearchProblem(SearchProblem):
         else:
             raise ValueError(f"Unknown state index: {state.index}")
 
+
 def build_state_space():
     state_space = DiscreteStateSpace()
     state_space.add_state(DiscreteState(index='a'))
@@ -67,18 +68,21 @@ def build_state_space():
     state_space.add_state(DiscreteState(index='e'))
     return state_space
 
+
 def build_goal_space(goal_state_index):
     goal_space = DiscreteStateSpace()
     goal_state = DiscreteState(index=goal_state_index)
     goal_space.add_state(goal_state)
     return goal_space
 
+
 def build_problem(initial_state_index, goal_state_index):
     # Define search problem
     state_space = build_state_space()
     problem = FiveStateSearchProblem(state_space=state_space,
-                                  goal_space=build_goal_space(goal_state_index),
-                                  transition_function=FiveLetterStateTransitionFunction(),
-                                  initial_state=state_space.space[initial_state_index]
-                                  )
+                                     goal_space=build_goal_space(
+                                         goal_state_index),
+                                     transition_function=FiveLetterStateTransitionFunction(),
+                                     initial_state=state_space.space[initial_state_index]
+                                     )
     return state_space, problem

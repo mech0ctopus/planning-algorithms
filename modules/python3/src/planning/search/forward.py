@@ -9,23 +9,24 @@ class ForwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
     """
     Algorithm described in Figure 2.4 of Planning Algorithms by LaValle.
     """
+
     def search(self) -> bool:
-        #### 1. Initialization
+        # 1. Initialization
         self.priority_queue.add(self.problem.initial_state)
         self.problem.initial_state.mark_visited()
 
         while not self.priority_queue.is_empty():
-            #### 2. Select Vertex
+            # 2. Select Vertex
             self.current_state = self.priority_queue.get()
 
-            #### 5. Check for solution
+            # 5. Check for solution
             if self.has_succeeded():
                 return True
 
-            #### 3. Apply an action
+            # 3. Apply an action
             for action in self.get_current_actions():
                 next_state = self.get_next_state(action)
-                #### 4. Insert a Directed Edge into the Graph
+                # 4. Insert a Directed Edge into the Graph
                 next_state.set_parent(self.current_state)
                 # TODO: Store action taken from current_state -> next_state
                 #       so that we can return it with our plan later on.
@@ -37,7 +38,7 @@ class ForwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
                 else:
                     self.resolve_duplicate(next_state)
 
-                #### 5. Check for solution (added to mimic backward search)
+                # 5. Check for solution (added to mimic backward search)
                 if self.has_succeeded():
                     return True
 

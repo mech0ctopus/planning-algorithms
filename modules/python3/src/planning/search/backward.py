@@ -9,33 +9,34 @@ class BackwardSearchAlgorithm(UnidirectionalSearchAlgorithm):
     """
     Algorithm described in Figure 2.6 of Planning Algorithms by LaValle.
     """
+
     def search(self) -> bool:
-        #### 1. Initialization
+        # 1. Initialization
         for goal_state in self.problem.goal_space:
             self.priority_queue.add(goal_state)
             goal_state.mark_visited()
 
         while not self.priority_queue.is_empty():
-            #### 2. Select Vertex
+            # 2. Select Vertex
             next_state = self.priority_queue.get()
 
-            #### 5. Check for solution
+            # 5. Check for solution
             if self.has_succeeded():
                 return True
 
-            #### 3. Apply an action
+            # 3. Apply an action
             for action in self.get_previous_actions(next_state):
                 self.current_state = self.get_previous_state(next_state, action)
                 self.current_state.set_parent(next_state)
- 
-                #### 4. Insert a Directed Edge into the Graph
+
+                # 4. Insert a Directed Edge into the Graph
                 if not self.current_state.is_visited():
                     self.current_state.mark_visited()
                     self.priority_queue.add(self.current_state)
                 else:
                     self.resolve_duplicate(self.current_state)
 
-                #### 5. Check for solution (added to resolve five-state problem failure)
+                # 5. Check for solution (added to resolve five-state problem failure)
                 if self.has_succeeded():
                     return True
 

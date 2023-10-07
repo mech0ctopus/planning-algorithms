@@ -24,14 +24,14 @@ class MoveOn3dGrid(Action):
 
 class GridStateTransitionFunction(StateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: MoveOn3dGrid,
-                       state_space: DiscreteStateSpace) -> DiscreteState:      
+                       state_space: DiscreteStateSpace) -> DiscreteState:
         next_state_idx = (current_state.index[0] + action.x,
                           current_state.index[1] + action.y,
                           current_state.index[2] + action.z)
         return state_space.space[next_state_idx]
 
     def get_previous_state(self, future_state: DiscreteState, action: MoveOn3dGrid,
-                           state_space: DiscreteStateSpace) -> DiscreteState:      
+                           state_space: DiscreteStateSpace) -> DiscreteState:
         previous_state_idx = (future_state.index[0] - action.x,
                               future_state.index[1] - action.y,
                               future_state.index[2] - action.z)
@@ -42,7 +42,7 @@ class Grid3dSearchProblem(SearchProblem):
     def get_actions(self, state: DiscreteState) -> List[Action]:
         x, y, z = state.index
         # Non-Border cells
-        if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1) and  0 < z < (ZMAX - 1):
+        if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1) and 0 < z < (ZMAX - 1):
             actions = [MoveOn3dGrid(-1, 0, 0),
                        MoveOn3dGrid(1, 0, 0),
                        MoveOn3dGrid(0, -1, 0),
@@ -69,7 +69,7 @@ class Grid3dSearchProblem(SearchProblem):
     def get_previous_actions(self, state: DiscreteState) -> List[Action]:
         x, y, z = state.index
         # Non-Border cells
-        if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1) and  0 < z < (ZMAX - 1):
+        if 0 < x < (XMAX - 1) and 0 < y < (YMAX - 1) and 0 < z < (ZMAX - 1):
             actions = [MoveOn3dGrid(-1, 0, 0),
                        MoveOn3dGrid(1, 0, 0),
                        MoveOn3dGrid(0, -1, 0),
@@ -93,13 +93,14 @@ class Grid3dSearchProblem(SearchProblem):
                 actions.append(MoveOn3dGrid(0, 0, 1))
         return actions
 
+
 def build_state_space():
     state_space = DiscreteStateSpace()
     for x in range(XMAX):
-        for y in range (YMAX):
-            for z in range (ZMAX):
-                state = DiscreteState(index=(x,y,z))
-                state_space.add_state(state)  
+        for y in range(YMAX):
+            for z in range(ZMAX):
+                state = DiscreteState(index=(x, y, z))
+                state_space.add_state(state)
     return state_space
 
 
@@ -147,11 +148,12 @@ def plot_results(state_space, plan, initial_state_index, goal_state_index):
     plt.ylabel("y")
     plt.savefig("grid3d.png")
 
+
 def build_problem(initial_state_index, goal_state_index):
     state_space = build_state_space()
     problem = Grid3dSearchProblem(state_space=state_space,
                                   goal_space=build_goal_space(goal_state_index),
                                   transition_function=GridStateTransitionFunction(),
-                                  initial_state = state_space.space[initial_state_index]
+                                  initial_state=state_space.space[initial_state_index]
                                   )
     return state_space, problem

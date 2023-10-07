@@ -7,32 +7,33 @@ from planning.search.forward import *
 
 from planning.problems import five_state_problem, grid2d_problem, grid3d_problem
 
+
 class SearchAlgorithmsTestBase(unittest.TestCase):
     def get_problems(self) -> None:
         return [
-                # 2D Grid
-                grid2d_problem.build_problem(initial_state_index=(6,3), goal_state_index=(3,9)),
-                grid2d_problem.build_problem(initial_state_index=(1,10), goal_state_index=(8,1)),
-                grid2d_problem.build_problem(initial_state_index=(3,8), goal_state_index=(12,2)),
-                grid2d_problem.build_problem(initial_state_index=(10,2), goal_state_index=(5,5)),
-                grid2d_problem.build_problem(initial_state_index=(12,4), goal_state_index=(2,7)), 
-                # 3D Grid
-                grid3d_problem.build_problem(initial_state_index=(3,11,8), goal_state_index=(6,2,6)),
-                grid3d_problem.build_problem(initial_state_index=(5,8,12), goal_state_index=(12,13,10)),
-                grid3d_problem.build_problem(initial_state_index=(3,5,1), goal_state_index=(3,7,5)),
-                grid3d_problem.build_problem(initial_state_index=(4,5,10), goal_state_index=(2,2,10)),
-                grid3d_problem.build_problem(initial_state_index=(10,2,8), goal_state_index=(2,8,12)),
-                # Five State
-                five_state_problem.build_problem(initial_state_index='a', goal_state_index='e'),
-                five_state_problem.build_problem(initial_state_index='a', goal_state_index='d'),
-                five_state_problem.build_problem(initial_state_index='b', goal_state_index='a'),
-                five_state_problem.build_problem(initial_state_index='d', goal_state_index='a'),
-                five_state_problem.build_problem(initial_state_index='d', goal_state_index='b'),
-                ]
+            # 2D Grid
+            grid2d_problem.build_problem(initial_state_index=(6, 3), goal_state_index=(3, 9)),
+            grid2d_problem.build_problem(initial_state_index=(1, 10), goal_state_index=(8, 1)),
+            grid2d_problem.build_problem(initial_state_index=(3, 8), goal_state_index=(12, 2)),
+            grid2d_problem.build_problem(initial_state_index=(10, 2), goal_state_index=(5, 5)),
+            grid2d_problem.build_problem(initial_state_index=(12, 4), goal_state_index=(2, 7)),
+            # 3D Grid
+            grid3d_problem.build_problem(initial_state_index=(3, 11, 8), goal_state_index=(6, 2, 6)),
+            grid3d_problem.build_problem(initial_state_index=(5, 8, 12), goal_state_index=(12, 13, 10)),
+            grid3d_problem.build_problem(initial_state_index=(3, 5, 1), goal_state_index=(3, 7, 5)),
+            grid3d_problem.build_problem(initial_state_index=(4, 5, 10), goal_state_index=(2, 2, 10)),
+            grid3d_problem.build_problem(initial_state_index=(10, 2, 8), goal_state_index=(2, 8, 12)),
+            # Five State
+            five_state_problem.build_problem(initial_state_index='a', goal_state_index='e'),
+            five_state_problem.build_problem(initial_state_index='a', goal_state_index='d'),
+            five_state_problem.build_problem(initial_state_index='b', goal_state_index='a'),
+            five_state_problem.build_problem(initial_state_index='d', goal_state_index='a'),
+            five_state_problem.build_problem(initial_state_index='d', goal_state_index='b'),
+        ]
 
     def assert_all_algorithms_solve_all_problems(self):
         for name, algorithm in self.algorithms.items():
-          self.assert_algorithm_solves_all_problems(name=name, algorithm=algorithm)
+            self.assert_algorithm_solves_all_problems(name=name, algorithm=algorithm)
 
     def assert_algorithm_solves_all_problems(self, name, algorithm):
         for _, problem in self.get_problems():
@@ -67,12 +68,13 @@ class SearchAlgorithmsTestBase(unittest.TestCase):
             self.assertEqual(all_state_indices.count(state_idx), 1,
                              f"Plan for from {algorithm_name} contains duplicate states!")
 
+
 class TestForwardSearchAlgorithms(SearchAlgorithmsTestBase):
     def setUp(self) -> None:
         self.algorithms = {
-                           "BreadthFirstForward": BreadthFirstForwardSearchAlgorithm,
-                           "DepthFirstForward": DepthFirstForwardSearchAlgorithm,
-                           }
+            "BreadthFirstForward": BreadthFirstForwardSearchAlgorithm,
+            "DepthFirstForward": DepthFirstForwardSearchAlgorithm,
+        }
 
     def test_forward_search(self):
         self.assert_all_algorithms_solve_all_problems()
@@ -81,9 +83,9 @@ class TestForwardSearchAlgorithms(SearchAlgorithmsTestBase):
 class TestBackwardSearchAlgorithms(SearchAlgorithmsTestBase):
     def setUp(self) -> None:
         self.algorithms = {
-                           "BreadthFirstBackward": BreadthFirstBackwardSearchAlgorithm,
-                           "DepthFirstBackward": DepthFirstBackwardSearchAlgorithm,
-                           }
+            "BreadthFirstBackward": BreadthFirstBackwardSearchAlgorithm,
+            "DepthFirstBackward": DepthFirstBackwardSearchAlgorithm,
+        }
 
     def test_backward_search(self):
         self.assert_all_algorithms_solve_all_problems()
@@ -92,9 +94,9 @@ class TestBackwardSearchAlgorithms(SearchAlgorithmsTestBase):
 class TestBidirectionalSearchAlgorithms(SearchAlgorithmsTestBase):
     def setUp(self) -> None:
         self.algorithms = {
-                           "BreadthFirstBidirectional": BreadthFirstBidirectionalSearchAlgorithm,
-                           "DepthFirstBidirectional": DepthFirstBidirectionalSearchAlgorithm,
-                           }
+            "BreadthFirstBidirectional": BreadthFirstBidirectionalSearchAlgorithm,
+            "DepthFirstBidirectional": DepthFirstBidirectionalSearchAlgorithm,
+        }
 
     def test_bidirectional_search(self):
         self.assert_all_algorithms_solve_all_problems()

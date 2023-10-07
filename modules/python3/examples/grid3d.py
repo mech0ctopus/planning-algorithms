@@ -5,8 +5,8 @@ from planning.search.forward import *
 
 
 if __name__ == '__main__':
-    initial_state_index = (1,2,3)
-    goal_state_index = (12,13,10)  
+    initial_state_index = (1, 2, 3)
+    goal_state_index = (12, 13, 10)
     # Define search problem
     state_space, problem = build_problem(initial_state_index, goal_state_index)
     # Solve search problem

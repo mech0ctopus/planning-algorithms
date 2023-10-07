@@ -20,13 +20,13 @@ class MoveOn2dGrid(Action):
 
 class GridStateTransitionFunction(StateTransitionFunction):
     def get_next_state(self, current_state: DiscreteState, action: MoveOn2dGrid,
-                       state_space: DiscreteStateSpace) -> DiscreteState:      
+                       state_space: DiscreteStateSpace) -> DiscreteState:
         next_state_idx = (current_state.index[0] + action.x,
                           current_state.index[1] + action.y)
         return state_space.space[next_state_idx]
 
     def get_previous_state(self, future_state: DiscreteState, action: MoveOn2dGrid,
-                           state_space: DiscreteStateSpace) -> DiscreteState:      
+                           state_space: DiscreteStateSpace) -> DiscreteState:
         previous_state_idx = (future_state.index[0] - action.x,
                               future_state.index[1] - action.y)
         return state_space.space[previous_state_idx]
@@ -75,13 +75,15 @@ class Grid2dSearchProblem(SearchProblem):
                 actions.append(MoveOn2dGrid(0, 1))
         return actions
 
+
 def build_state_space():
     state_space = DiscreteStateSpace()
     for x in range(XMAX):
-        for y in range (YMAX):
-            state = DiscreteState(index=(x,y))
-            state_space.add_state(state)   
+        for y in range(YMAX):
+            state = DiscreteState(index=(x, y))
+            state_space.add_state(state)
     return state_space
+
 
 def build_goal_space(goal_state_index):
     goal_space = DiscreteStateSpace()
@@ -89,12 +91,14 @@ def build_goal_space(goal_state_index):
     goal_space.add_state(goal_state)
     return goal_space
 
+
 def build_xy_grid(state_space):
     grid = np.zeros((XMAX, YMAX))
     for x in range(XMAX):
         for y in range(YMAX):
-            grid[x, y] = state_space.space[(x,y)].is_visited()
+            grid[x, y] = state_space.space[(x, y)].is_visited()
     return grid
+
 
 def build_problem(initial_state_index, goal_state_index):
     # Define search problem
@@ -105,6 +109,7 @@ def build_problem(initial_state_index, goal_state_index):
                                   initial_state=state_space.space[initial_state_index]
                                   )
     return state_space, problem
+
 
 def plot_results(problem, plan, initial_state_index, goal_state_index):
     grid = build_xy_grid(problem.state_space)
