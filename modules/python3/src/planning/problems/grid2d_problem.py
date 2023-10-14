@@ -112,7 +112,7 @@ def build_problem(initial_state_index, goal_state_index):
     return state_space, problem
 
 
-def plot_results(problem, plan, initial_state_index, goal_state_index):
+def plot_results(problem, plan, initial_state_index, goal_state_index, name_str="grid2d"):
     grid = build_xy_grid(problem.state_space)
 
     for state in plan:
@@ -124,4 +124,4 @@ def plot_results(problem, plan, initial_state_index, goal_state_index):
     plt.imshow(grid.T, origin="lower")
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.savefig("grid2d.png")
+    plt.savefig(name_str + ".png")

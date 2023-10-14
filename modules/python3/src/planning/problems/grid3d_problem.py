@@ -112,7 +112,7 @@ def build_goal_space(goal_state_index):
     return goal_space
 
 
-def plot_results(state_space, plan, initial_state_index, goal_state_index):
+def plot_results(state_space, plan, initial_state_index, goal_state_index, name_str="grid3d"):
     grid = np.zeros((XMAX, YMAX, ZMAX))
     colors = np.zeros((XMAX, YMAX, ZMAX, 4), dtype=np.float32)
 
@@ -147,7 +147,7 @@ def plot_results(state_space, plan, initial_state_index, goal_state_index):
 
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.savefig("grid3d.png")
+    plt.savefig(name_str + ".png")
 
 
 def build_problem(initial_state_index, goal_state_index):
