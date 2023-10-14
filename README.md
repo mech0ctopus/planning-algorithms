@@ -40,10 +40,10 @@ python grid3d.py
 python five_state.py
 python optimal_grid2d.py
 python optimal_grid3d.py
+python optimal_five_state.py
 ```
 
 ### TODO
-- Create Optimal version of Five State problem example
 - Update unit tests for ForwardLabelCorrecting
 
 ### TODO Later

@@ -25,7 +25,7 @@ class DiscreteState:
             parent_s = f" <- parent_id: {self.parent.index}"
         else:
             parent_s = ""
-        return f"index={self.index}. status={self.status}" + parent_s
+        return f"index={self.index}. cost={self.cost}. status={self.status}" + parent_s
 
     def __eq__(self, other_state) -> bool:
         return self.index == other_state

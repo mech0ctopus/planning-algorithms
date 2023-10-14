@@ -45,7 +45,7 @@ class ForwardLabelCorrectingAlgorithm(UnidirectionalSearchAlgorithm):
         return self.has_succeeded(goal_state)
 
     def has_succeeded(self, goal_state: DiscreteState) -> bool:
-        return goal_state.get_cost() == float('inf')
+        return goal_state.get_cost() != float('inf')
 
     def get_plan(self, goal_state: DiscreteState) -> List[DiscreteState]:
         plan = []

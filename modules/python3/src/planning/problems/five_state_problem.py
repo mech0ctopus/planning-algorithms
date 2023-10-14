@@ -6,8 +6,9 @@ LETTERS = 'abcde'
 
 
 class AlphabetIndexIncrease(Action):
-    def __init__(self, index) -> None:
+    def __init__(self, index, cost) -> None:
         self.index = index
+        self.cost = cost
 
 
 class FiveLetterStateTransitionFunction(StateTransitionFunction):
@@ -25,17 +26,17 @@ class FiveLetterStateTransitionFunction(StateTransitionFunction):
 class FiveStateSearchProblem(SearchProblem):
     def get_actions(self, state: DiscreteState) -> List[Action]:
         if state.index == 'a':
-            return [AlphabetIndexIncrease(index=0),
-                    AlphabetIndexIncrease(index=1)]
+            return [AlphabetIndexIncrease(index=0, cost=2),
+                    AlphabetIndexIncrease(index=1, cost=2)]
         elif state.index == 'b':
-            return [AlphabetIndexIncrease(index=1),
-                    AlphabetIndexIncrease(index=2)]
+            return [AlphabetIndexIncrease(index=1, cost=1),
+                    AlphabetIndexIncrease(index=2, cost=4)]
         elif state.index == 'c':
-            return [AlphabetIndexIncrease(index=1),
-                    AlphabetIndexIncrease(index=-2)]
+            return [AlphabetIndexIncrease(index=1, cost=1),
+                    AlphabetIndexIncrease(index=-2, cost=1)]
         elif state.index == 'd':
-            return [AlphabetIndexIncrease(index=-1),
-                    AlphabetIndexIncrease(index=1)]
+            return [AlphabetIndexIncrease(index=-1, cost=1),
+                    AlphabetIndexIncrease(index=1, cost=1)]
         elif state.index == 'e':
             return []
         else:
@@ -43,18 +44,18 @@ class FiveStateSearchProblem(SearchProblem):
 
     def get_previous_actions(self, state: DiscreteState) -> List[Action]:
         if state.index == 'a':
-            return [AlphabetIndexIncrease(index=0),
-                    AlphabetIndexIncrease(index=-2)]
+            return [AlphabetIndexIncrease(index=0, cost=2),
+                    AlphabetIndexIncrease(index=-2, cost=1)]
         elif state.index == 'b':
-            return [AlphabetIndexIncrease(index=1)]
+            return [AlphabetIndexIncrease(index=1, cost=2)]
         elif state.index == 'c':
-            return [AlphabetIndexIncrease(index=1),
-                    AlphabetIndexIncrease(index=-1)]
+            return [AlphabetIndexIncrease(index=1, cost=1),
+                    AlphabetIndexIncrease(index=-1, cost=1)]
         elif state.index == 'd':
-            return [AlphabetIndexIncrease(index=2),
-                    AlphabetIndexIncrease(index=1)]
+            return [AlphabetIndexIncrease(index=2, cost=4),
+                    AlphabetIndexIncrease(index=1, cost=1)]
         elif state.index == 'e':
-            return [AlphabetIndexIncrease(index=1)]
+            return [AlphabetIndexIncrease(index=1, cost=1)]
         else:
             raise ValueError(f"Unknown state index: {state.index}")
 
