@@ -1,5 +1,5 @@
 # planning-algorithms
-Experimental implementations of Planning Algorithms by Steven LaValle.
+Experimental implementations of [Planning Algorithms by Steven LaValle](http://lavalle.pl/planning/).
 
 ### Installation
 ```bash
