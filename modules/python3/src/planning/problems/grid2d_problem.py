@@ -16,6 +16,7 @@ class MoveOn2dGrid(Action):
     def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
+        self.cost = 1
 
 
 class GridStateTransitionFunction(StateTransitionFunction):

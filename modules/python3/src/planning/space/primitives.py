@@ -18,10 +18,11 @@ class DiscreteState:
         self.index = index
         self.parent = parent
         self.status = status
+        self.cost = 0
 
     def __repr__(self) -> str:
         if self.parent is not None:
-            parent_s =  f" <- parent_id: {self.parent.index}"
+            parent_s = f" <- parent_id: {self.parent.index}"
         else:
             parent_s = ""
         return f"index={self.index}. status={self.status}" + parent_s
@@ -49,6 +50,12 @@ class DiscreteState:
 
     def get_parent(self) -> None:
         return self.parent
+
+    def set_cost(self, new_cost: float) -> None:
+        self.cost = new_cost
+
+    def get_cost(self) -> float:
+        return self.cost
 
     @staticmethod
     def copy(state):

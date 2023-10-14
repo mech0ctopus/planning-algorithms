@@ -20,6 +20,7 @@ class MoveOn3dGrid(Action):
         self.x = x
         self.y = y
         self.z = z
+        self.cost = 1
 
 
 class GridStateTransitionFunction(StateTransitionFunction):
