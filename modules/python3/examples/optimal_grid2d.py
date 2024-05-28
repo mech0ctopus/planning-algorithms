@@ -11,8 +11,8 @@ if __name__ == '__main__':
     goal_state = state_space.get_state(DiscreteState(index=goal_state_index))
     # Solve search problem
     solver = ForwardLabelCorrectingAlgorithm(problem, priority_queue_type=FIFO)
-    success = solver.search(goal_state)
-    print(f"Success: {success}")
+    solver.search()
+    print(f"Success: {solver.has_succeeded(goal_state)}")
     # Get Plan
     plan = solver.get_plan(goal_state=goal_state)
     # Print / Plot results
