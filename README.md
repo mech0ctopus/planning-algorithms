@@ -41,6 +41,11 @@ python five_state.py
 python optimal_grid2d.py
 python optimal_grid3d.py
 python optimal_five_state.py
+
+# When using Docker
+xhost +local:docker
+docker build --pull --no-cache -t planning-mujoco:latest .
+docker run --rm   -e MUJOCO_GL=glfw   -e DISPLAY=$DISPLAY  -e PATTERN=random -v /tmp/.X11-unix:/tmp/.X11-unix   planning-mujoco:latest   python modules/python3/examples/mujoco_grid3d_obstacles.py
 ```
 
 ### TODO
